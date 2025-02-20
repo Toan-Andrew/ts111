@@ -31,9 +31,9 @@
                         </button>
                     </li>
                     <li class="nav-item">
-                        <button id="btnAdd" href="{{ route('categories.create') }}" class="btn btn-success btn-lg mx-2">
+                        <a id="btnAdd" href="{{ route('categories.create') }}" class="btn btn-success btn-lg mx-2">
                             <i class="fa fa-plus"></i> Add New Category
-                        </button>
+                        </a>
                     </li>
                     <li>
                         <!-- Nút Logout -->
@@ -154,9 +154,9 @@
         <div class="container">
             <div class="newsletter-content">
                 <i class="fa fa-envelope"></i>
-                <span>ĐĂNG KÝ NHẬN BẢN TIN</span>
+                <span>HÒM THƯ GÓP Ý</span>
                 
-                <input type="email" placeholder="Nhập email của bạn">
+                <input type="email" placeholder="Nhập ý kiến của bạn">
                     
                 <button>Đăng ký</button>
                 

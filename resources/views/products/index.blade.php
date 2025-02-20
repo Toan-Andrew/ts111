@@ -66,7 +66,7 @@
     <!-- Featured Products (Carousel) -->
     <div id="featuredProductsCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
-        @foreach ($products->take(5) as $product)
+        @foreach ($categories->take(5) as $product)
         <div class="carousel-item @if($loop->first) active @endif">
             @if($product->image)
             <img src="{{ asset($product->image) }}" class="d-block w-100 vh-100" alt="Product Image" style="object-fit: cover;">
@@ -185,9 +185,9 @@
         <div class="container">
             <div class="newsletter-content">
                 <i class="fa fa-envelope"></i>
-                <span>ĐĂNG KÝ NHẬN BẢN TIN</span>
+                <span>HÒM THƯ GÓP Ý</span>
                 
-                <input type="email" placeholder="Nhập email của bạn">
+                <input type="email" placeholder="Nhập ý kiến của bạn">
                     
                 <button>Đăng ký</button>
                 

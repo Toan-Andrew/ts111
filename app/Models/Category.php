@@ -14,4 +14,9 @@ class Category extends Model
 
     // Nếu bạn muốn sử dụng timestamp tự động (created_at, updated_at)
     public $timestamps = true;
+    public function products()
+{
+    return $this->hasMany(Product::class);
+}
+
 }

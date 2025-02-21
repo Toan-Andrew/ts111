@@ -48,4 +48,37 @@ class UserController extends Controller
             'message' => $e->getMessage()
         ], 500);
     }}
+    public function profile(Request $request)
+    {
+        $user = auth()->user(); // Lấy thông tin user hiện tại
+        return view('user.profile', compact('user'));
+    }
+    public function updateProfile(Request $request)
+    {
+        $user = auth()->user();
+
+        // Debug để xem dữ liệu gửi lên
+        // dd($request->all());
+
+        $request->validate([
+            'name'    => 'required|string|max:255',
+            'phone'   => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
+        ]);
+
+        // Cập nhật thông tin người dùng
+        $updated = $user->update([
+            'name'    => $request->name,
+            'phone'   => $request->phone,
+            'address' => $request->address,
+        ]);
+
+        // Kiểm tra kết quả update (sử dụng dd hoặc Log)
+        // dd($updated);
+
+        return redirect()->back()->with('success', 'Thông tin cá nhân đã được cập nhật!');
+    }
+
+
+
 }

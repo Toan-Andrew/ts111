@@ -18,29 +18,22 @@ class ProductController extends Controller
      * 
      */
 
-     public function index(): View
-     {
-         // Lấy danh sách danh mục từ cơ sở dữ liệu
-         $categories = Category::all();
-     
-         // Lấy danh sách sản phẩm từ cơ sở dữ liệu, phân trang 6 sản phẩm mỗi trang
-         $products = Product::latest()->paginate(6);
-     
-        //  $user = Auth::user();
-     
-        //  $orders = Order::where('email', $user->email)->latest()->paginate(6);
-     
-        //  $order_count = Order::where('email', $user->email);
-         
-        //      // Tính tổng số đơn hàng của người dùng
-        //      $cartCount = $order_count->count();
+     public function index(Request $request)
+{
+    // Nếu có truyền tham số 'category' thì chỉ lấy danh mục đó và các sản phẩm của nó
+    if ($request->has('category') && $request->category != null) {
+         $categories = Category::with('products')
+                            ->where('id', $request->category)
+                            ->get();
+    } else {
+         // Lấy tất cả các danh mục kèm theo sản phẩm của từng danh mục
+         $categories = Category::with('products')->get();
+    }
+    
+    return view('products.index', compact('categories'));
+}
 
-        $cartCount = 0;
-         
-     
-         // Truyền cả products và categories vào View
-         return view('products.index', compact('products', 'categories', 'cartCount'));
-     }
+
      
 
     public function admin(): View
@@ -59,18 +52,19 @@ public function buy(Request $request, $id)
 {
     $product = Product::findOrFail($id);
 
-    // Lưu thông tin đơn hàng
     Order::create([
-        'name' => $request->name,
-        'phone' => $request->phone,
-        'address' => $request->address,
-        'email' => Auth::user()->email ?? null, // Lấy email nếu đã đăng nhập
-        'price' => $product->price,
+        'name'       => $request->name,
+        'phone'      => $request->phone,
+        'address'    => $request->address,
+        'email'      => $request->email,  // Lấy email từ form, không dùng Auth::user()->email nếu bạn muốn dùng dữ liệu nhập từ form
+        'price'      => $product->price,
         'order_time' => now(),
+        'img'        => $product->image ?? 'default_image.jpg', // Nếu cần lưu hình ảnh sản phẩm
     ]);
 
     return redirect()->route('products.index')->with('success', 'Your order has been placed successfully!');
 }
+
 
 
     /**

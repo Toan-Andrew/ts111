@@ -103,24 +103,29 @@ class CategoryController extends Controller
      * Update the specified category in storage.
      */
     public function update(CategoryUpdateRequest $request, Category $category): RedirectResponse
-    {
-        $validated = $request->validated();
+{
+    $validated = $request->validated();
 
-        // Kiểm tra và xử lý file ảnh khi cập nhật
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $extension;
-            $file->move(public_path('uploads/category/'), $filename);
-            $validated['image'] = 'uploads/category/' . $filename;
-        }
+    // Debug: in ra dữ liệu validated
+    // dd($validated);
 
-        // Cập nhật danh mục
-        $category->update($validated);
-
-        return redirect()->route('categories.index')
-                         ->with('success', 'Category updated successfully.');
+    if ($request->hasFile('image')) {
+        $file = $request->file('image');
+        $extension = $file->getClientOriginalExtension();
+        $filename = time() . '.' . $extension;
+        $file->move(public_path('uploads/category/'), $filename);
+        $validated['image'] = 'uploads/category/' . $filename;
     }
+
+    // Debug: in ra validated sau khi xử lý file
+    // dd($validated);
+
+    $category->update($validated);
+
+    return redirect()->route('categories.index')
+                     ->with('success', 'Category updated successfully.');
+}
+
 
     /**
      * Remove the specified category from storage.

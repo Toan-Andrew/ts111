@@ -1,4 +1,5 @@
 @extends('products.layout')
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
 
 @section('content')
 <div class="container mt-4">
@@ -19,14 +20,11 @@
 
             <!-- Nội dung navbar -->
             <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
-                <<ul class="navbar-nav align-items-center">
+                <ul class="navbar-nav align-items-center">
                     <!-- Giỏ hàng -->
                     <li class="nav-item me-3">
                         <a href="{{ route('orders.index') }}" class="nav-link position-relative">
                             <i class="fas fa-shopping-cart"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                {{ $cartCount ?? 0 }}
-                            </span>
                         </a>
                     </li>
 
@@ -55,15 +53,18 @@
     </nav>
 
     <!-- Search Bar -->
-    <div class="row mb-5">
-        <div class="col-lg-6 mx-auto">
-            <div class="input-group rounded shadow-sm">
-                <input type="text" class="form-control" name="search" placeholder="Search for products..."
-                    value="{{ request('search') }}">
-                <button type="submit" class="btn btn-dark">Search</button>
+    <form action="{{ route('products.index') }}" method="GET">
+        <div class="row mb-5">
+            <div class="col-lg-6 mx-auto">
+                <div class="input-group rounded shadow-sm">
+                    <input type="text" class="form-control" name="search" placeholder="Search for products..."
+                        value="{{ request('search') }}">
+                    <button type="submit" class="btn btn-dark">Search</button>
+                </div>
             </div>
         </div>
-    </div>
+    </form>
+
 
     <!-- Featured Products (Carousel) -->
     <div id="featuredProductsCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -89,6 +90,24 @@
         </button>
     </div>
 
+    <!-- Phần Giới thiệu -->
+    <div class="intro-section my-5">
+        <div class="row align-items-center">
+            <!-- Cột bên trái: Hình ảnh -->
+            <div class="col-md-6">
+                <img src="{{ asset('uploads/category/Phenikaa.jpg') }}" alt="Intro Image" class="img-fluid rounded">
+            </div>
+            <!-- Cột bên phải: Nội dung giới thiệu -->
+            <div class="col-md-6">
+                <h2 class="mb-3" style="color: rgb(35, 65, 95); font-family: 'Dancing Script', cursive;">Giới thiệu về BrainyReads</h2>
+                <p class="lead">
+                    BrainyReads là nơi bạn có thể tìm thấy những quyển sách chất lượng, giúp bạn mở rộng kiến thức và khám phá những câu chuyện thú vị.
+                    Chúng tôi cung cấp đa dạng các thể loại sách, từ kinh doanh, tâm lý, nghệ thuật đến khoa học và công nghệ. Hãy cùng khám phá và trải nghiệm!
+                </p>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Category Buttons Section -->
     <div class="category-section mb-5 text-center">
@@ -111,10 +130,9 @@
     </div>
 
 
-    <!-- Category Rows Section: Mỗi hàng cho 1 loại sách -->
-    @foreach ($categories as $category)
+        @foreach($categories as $category)
         <div class="category-row mb-5">
-            <!-- Header của loại sách -->
+            <!-- Header của danh mục -->
             <div class="d-flex align-items-center mb-3">
                 <div class="me-3">
                     @if($category->image)
@@ -125,80 +143,96 @@
                 </div>
                 <h2 class="mb-0">{{ $category->name }}</h2>
             </div>
-            <!-- Danh sách các sản phẩm của loại sách đó -->
-            <div class="row">
-                @forelse($category->products as $product)
-                <div class="col-md-3 mb-4">
-                    <div class="card product-card h-100">
-                        <!-- Hình sản phẩm -->
-                        @if($product->image)
-                            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="card-img-top" style="height: 200px; object-fit: cover; border-radius: 15px;">
-                        @else
-                            <div class="d-flex justify-content-center align-items-center bg-light" style="height: 200px;">
-                                <span class="text-muted">No Image</span>
+
+            <!-- Container slider với mũi tên điều hướng -->
+            <div class="scroll-container position-relative">
+                <!-- Nút mũi tên trái -->
+                <button class="left-arrow" onclick="scrollLeft('slider{{ $category->id }}')">
+                    <i class="fa fa-chevron-left"></i>
+                </button>
+                
+                <!-- Slider: hiển thị các sản phẩm theo dòng ngang -->
+                <div id="slider{{ $category->id }}" class="product-slider">
+                    @forelse($category->products as $product)
+                        <div class="card product-card" style="width: 250px; margin-right: 1rem;">
+                            <!-- Hình sản phẩm -->
+                            @if($product->image)
+                                <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="card-img-top rounded" style="height:200px; object-fit:cover; border-radius:15px;">
+                            @else
+                                <div class="d-flex justify-content-center align-items-center bg-light rounded" style="height:200px;">
+                                    <span class="text-muted">No Image</span>
+                                </div>
+                            @endif
+
+                            <!-- Nội dung card -->
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title text-center">{{ Str::limit($product->name, 30) }}</h5>
+                                <p class="card-text text-muted">{{ Str::limit($product->detail, 60) }}</p>
+                                <div class="d-flex justify-content-between align-items-center mt-auto">
+                                    <span class="badge price-badge">${{ number_format($product->price, 2) }}</span>
+                                    <a href="{{ route('products.showdetail2', $product->id) }}" class="btn btn-outline-dark btn-sm">Chi tiết</a>
+                                </div>
+                                <button type="button" class="btn btn-success btn-sm mt-3 w-100" data-bs-toggle="modal" data-bs-target="#buyProductModal{{ $product->id }}">
+                                    Mua ngay
+                                </button>
                             </div>
-                        @endif
-
-                        <!-- Nội dung card -->
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title text-center">{{ Str::limit($product->name, 30) }}</h5>
-                            <p class="card-text text-muted">{{ Str::limit($product->detail, 60) }}</p>
-                            <div class="d-flex justify-content-between align-items-center mt-auto">
-                                <span class="badge price-badge">${{ number_format($product->price, 2) }}</span>
-                                <a href="{{ route('products.showdetail2', $product->id) }}" class="btn btn-outline-dark btn-sm">Chi tiết</a>
-                            </div>
-                            <button type="button" class="btn btn-success btn-sm mt-3 w-100" data-bs-toggle="modal" data-bs-target="#buyProductModal{{ $product->id }}">
-                                Mua ngay
-                            </button>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Modal Mua Hàng cho sản phẩm -->
-                <div class="modal fade" id="buyProductModal{{ $product->id }}" tabindex="-1" aria-labelledby="buyProductModalLabel{{ $product->id }}" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <form action="{{ route('products.buy', $product->id) }}" method="POST">
-                                @csrf
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="buyProductModalLabel{{ $product->id }}">Thông tin đơn hàng</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label for="name{{ $product->id }}" class="form-label">Họ và tên</label>
-                                        <input type="text" name="name" id="name{{ $product->id }}" class="form-control" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="phone{{ $product->id }}" class="form-label">Số điện thoại</label>
-                                        <input type="text" name="phone" id="phone{{ $product->id }}" class="form-control" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="address{{ $product->id }}" class="form-label">Địa chỉ giao hàng</label>
-                                        <input type="text" name="address" id="address{{ $product->id }}" class="form-control" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="email{{ $product->id }}" class="form-label">Email</label>
-                                        <input type="email" name="email" id="email{{ $product->id }}" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                    <button type="submit" class="btn btn-primary w-100">Đặt hàng</button>
-                                </div>
-                            </form>
+                    @empty
+                        <div class="w-100">
+                            <p class="text-muted">Không có sản phẩm nào trong danh mục này.</p>
                         </div>
-                    </div>
+                    @endforelse
                 </div>
-
-                @empty
-                    <div class="col-12">
-                        <p class="text-muted">Không có sản phẩm nào trong danh mục này.</p>
-                    </div>
-                @endforelse
+                
+                <!-- Nút mũi tên phải -->
+                <button class="right-arrow" onclick="scrollRight('slider{{ $category->id }}')">
+                    <i class="fa fa-chevron-right"></i>
+                </button>
             </div>
         </div>
     @endforeach
+
+    <!-- Modal Mua Hàng cho từng sản phẩm -->
+    @foreach($categories as $category)
+        @foreach($category->products as $product)
+            <div class="modal fade" id="buyProductModal{{ $product->id }}" tabindex="-1" aria-labelledby="buyProductModalLabel{{ $product->id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="{{ route('products.buy', $product->id) }}" method="POST">
+                            @csrf
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="buyProductModalLabel{{ $product->id }}">Thông tin đơn hàng</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="name{{ $product->id }}" class="form-label">Họ và tên</label>
+                                    <input type="text" name="name" id="name{{ $product->id }}" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone{{ $product->id }}" class="form-label">Số điện thoại</label>
+                                    <input type="text" name="phone" id="phone{{ $product->id }}" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="address{{ $product->id }}" class="form-label">Địa chỉ giao hàng</label>
+                                    <input type="text" name="address" id="address{{ $product->id }}" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email{{ $product->id }}" class="form-label">Email</label>
+                                    <input type="email" name="email" id="email{{ $product->id }}" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                <button type="submit" class="btn btn-primary w-100">Đặt hàng</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    @endforeach
+
 
     <!-- Footer Section -->
     <footer class="custom-footer">
@@ -340,5 +374,59 @@
         font-weight: bold;
     }
 </style>
+<!-- Thêm CSS bắt buộc vào phần head hoặc ngay trong file Blade -->
+<style>
+    .product-slider {
+        overflow-x: auto;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-start; /* Căn lề trái */
+        scroll-behavior: smooth;
+        padding: 1rem 3rem;
+    }
+    .product-slider .product-card {
+        flex: 0 0 250px !important;
+        width: 250px !important;
+        margin-right: 1rem;
+    }
+    .product-slider::-webkit-scrollbar {
+        display: none;
+    }
+    .left-arrow, .right-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        border: none;
+        padding: 0.5rem;
+        cursor: pointer;
+        border-radius: 50%;
+    }
+    .left-arrow {
+        left: 10px;
+    }
+    .right-arrow {
+        right: 10px;
+    }
+    .price-badge {
+        background-color: #ff5722 !important;
+        color: #fff !important;
+        font-weight: bold;
+    }
+</style>
+
+<script>
+    function scrollLeft(id) {
+        var container = document.getElementById(id);
+        container.scrollBy({ left: -300, behavior: 'smooth' });
+    }
+
+    function scrollRight(id) {
+        var container = document.getElementById(id);
+        container.scrollBy({ left: 300, behavior: 'smooth' });
+    }
+</script>
 
 @endsection

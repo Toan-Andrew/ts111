@@ -3,13 +3,13 @@
 @section('content')
 
 <div class="card mt-5">
-    <h2 class="card-header">Edit Category</h2>
+    <h2 class="card-header">Chỉnh sửa Loại Sách</h2>
     <div class="card-body">
 
         <!-- Nút quay lại danh sách -->
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <a class="btn btn-primary btn-sm" href="{{ route('categories.index') }}"><i class="fa fa-arrow-left"></i>
-                Back</a>
+                Trở về</a>
         </div>
 
         <!-- Form chỉnh sửa danh mục -->
@@ -18,7 +18,7 @@
             @method('PUT')
 
             <div class="mb-3">
-                <label for="inputName" class="form-label"><strong>Name:</strong></label>
+                <label for="inputName" class="form-label"><strong>Tên loại sách:</strong></label>
                 <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="inputName"
                     value="{{ old('name', $category->name) }}" placeholder="Category Name">
                 @error('name')
@@ -27,7 +27,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="inputImage" class="form-label"><strong>Image:</strong></label>
+                <label for="inputImage" class="form-label"><strong>Ảnh:</strong></label>
                 <input type="file" name="image" class="form-control @error('image') is-invalid @enderror"
                     id="inputImage">
                 @error('image')
@@ -42,7 +42,7 @@
                 @endif
             </div>
 
-            <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+            <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Lưu</button>
         </form>
 
     </div>

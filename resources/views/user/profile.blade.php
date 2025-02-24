@@ -4,26 +4,32 @@
 <div class="container mt-5">
     <h1>Thông tin cá nhân</h1>
     <div class="card">
-        <div class="card-body">
-            <h3 class="card-title">{{ $user->name }}</h3>
+        <div class="card-body text-center">
+            @if($user->avatar)
+                <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}" class="img-fluid" style="width:150px; height:150px; object-fit: cover; border-radius: 50%;">
+            @else
+                <img src="{{ asset('images/default-avatar.png') }}" alt="Default Avatar" class="img-fluid" style="width:150px; height:150px; object-fit: cover; border-radius: 50%;">
+            @endif
+            <h3 class="card-title mt-3">{{ $user->name }}</h3>
             <p class="card-text"><strong>Email:</strong> {{ $user->email }}</p>
             <p class="card-text"><strong>Số điện thoại:</strong> {{ $user->phone ?? 'Chưa cập nhật' }}</p>
             <p class="card-text"><strong>Địa chỉ:</strong> {{ $user->address ?? 'Chưa cập nhật' }}</p>
-            <!-- Nút Edit Profile để mở modal -->
+            <!-- Nút Edit Profile -->
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                 Edit Profile
             </button>
             <a href="{{ url('/products') }}" class="btn btn-secondary">Quay lại trang chủ</a>
-
         </div>
     </div>
 </div>
+
 
 <!-- Modal Edit Profile -->
 <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form action="{{ route('profile.update') }}" method="POST">
+      <!-- Chú ý: thêm enctype để xử lý upload file -->
+      <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="modal-header">
@@ -46,7 +52,11 @@
             <label for="address" class="form-label">Địa chỉ</label>
             <input type="text" name="address" class="form-control" value="{{ $user->address }}">
           </div>
-          <!-- Bạn có thể thêm các trường khác nếu cần -->
+          <!-- Upload Avatar -->
+          <div class="mb-3">
+            <label for="avatar" class="form-label">Avatar</label>
+            <input type="file" name="avatar" id="avatar" class="form-control">
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -56,4 +66,3 @@
     </div>
   </div>
 </div>
-@endsection

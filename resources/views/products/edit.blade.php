@@ -7,7 +7,7 @@
     <div class="card-body">
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <a class="btn btn-primary btn-sm" href="{{ route('products.admin') }}"><i class="fa fa-arrow-left"></i>
+            <a class="btn btn-primary btn-sm" href="{{ route('categories.index') }}"><i class="fa fa-arrow-left"></i>
                 Back</a>
         </div>
 
@@ -59,6 +59,22 @@
                 <div class="form-text text-danger">{{ $message }}</div>
                 @enderror
             </div>
+            <!-- Thêm phần Preview (file PDF) -->
+            <div class="mb-3">
+                <label for="inputPreview" class="form-label"><strong>Preview (PDF):</strong></label>
+                <input type="file" name="preview" class="form-control @error('preview') is-invalid @enderror" id="inputPreview" accept="application/pdf">
+                @if(isset($product) && $product->preview)
+                    <div class="mt-2">
+                        <a href="{{ asset('storage/' . $product->preview) }}" target="_blank" class="btn btn-outline-info btn-sm">
+                            View Current Preview
+                        </a>
+                    </div>
+                @endif
+                @error('preview')
+                <div class="form-text text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
 
             <button type="submit" class="btn btn-success"><i class="fa-solid fa-floppy-disk"></i> Update</button>
         </form>

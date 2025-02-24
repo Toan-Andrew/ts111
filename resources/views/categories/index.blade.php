@@ -22,24 +22,24 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <button id="btnShowCategories" class="btn btn-outline-light btn-lg mx-2">
-                            Categories
+                            Loại sách
                         </button>
                     </li>
                     <li class="nav-item">
                         <button id="btnShowOrders" class="btn btn-outline-warning btn-lg mx-2">
-                            Order List
+                            Danh sách đặt hàng
                         </button>
                     </li>
                     <li class="nav-item">
                         <a id="btnAdd" href="{{ route('categories.create') }}" class="btn btn-success btn-lg mx-2">
-                            <i class="fa fa-plus"></i> Add New Category
+                            <i class="fa fa-plus"></i> Thêm loại sách mới
                         </a>
                     </li>
                     <li>
                         <!-- Nút Logout -->
                         <button id="btnlogout">
                             <a href="{{ route('logout') }}">
-                                Logout
+                                Đăng xuất
                             </a>
                         </button>
                     </li>
@@ -66,20 +66,20 @@
                             <h5 class="card-title text-primary">{{ $category->name }}</h5>
                             <div class="d-grid gap-2">
                                 <a href="{{ route('categories.showProducts', $category->id) }}" class="btn btn-info btn-sm">
-                                    <i class="fa fa-eye"></i> View Products
+                                    <i class="fa fa-eye"></i> Xem sản phẩm
                                 </a>
                                 <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-warning btn-sm">
-                                    <i class="fa fa-pen"></i> Edit
+                                    <i class="fa fa-pen"></i> Chỉnh sửa
                                 </a>
                                 <form action="{{ route('categories.destroy', $category->id) }}" method="POST"
                                     class="d-inline-block" onsubmit="return confirm('Are you sure?');">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="fa fa-trash"></i> Delete
+                                        <i class="fa fa-trash"></i> Xóa
                                     </button>
                                 </form>
                                 <a href="{{ route('categories.createProduct', $category->id) }}" class="btn btn-success btn-sm">
-                                    <i class="fa fa-plus"></i> Create Product
+                                    <i class="fa fa-plus"></i> Thêm sản phẩm
                                 </a>
                             </div>
                         </div>
@@ -96,24 +96,24 @@
         <div id="ordersSection" style="display: none;">
             <form method="GET" action="{{ route('categories.index') }}" class="mb-3">
                 <div class="input-group">
-                    <input type="text" name="search" class="form-control" placeholder="Search by email or name"
-                        value="{{ request('search') }}">
+                    <input type="text" name="search" class="form-control" placeholder="Search by email or name" value="{{ request('search') }}">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fa-solid fa-search"></i> Search
+                        Tìm kiếm
                     </button>
                 </div>
             </form>
+
 
             <div class="table-responsive">
                 <table class="table table-bordered table-hover shadow-sm">
                     <thead class="table-dark text-center">
                         <tr>
-                            <th>Name</th>
-                            <th>Phone</th>
-                            <th>Address</th>
+                            <th>Tên</th>
+                            <th>Số điện thoại</th>
+                            <th>Địa chỉ</th>
                             <th>Email</th>
-                            <th>Price</th>
-                            <th>Order Time</th>
+                            <th>Giá tiền</th>
+                            <th>Thời gian đặt hàng</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -148,9 +148,17 @@
         document.getElementById("categoriesSection").style.display = "block";
         document.getElementById("ordersSection").style.display = "none";
     });
+    window.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('search')) {
+            document.getElementById("categoriesSection").style.display = "none";
+            document.getElementById("ordersSection").style.display = "block";
+        }
+    });
+
 </script>
-<!-- Footer -->
-<footer class="custom-footer">
+    <!-- Footer -->
+    <footer class="custom-footer">
         <div class="container">
             <div class="newsletter-content">
                 <i class="fa fa-envelope"></i>
@@ -158,7 +166,7 @@
                 
                 <input type="email" placeholder="Nhập ý kiến của bạn">
                     
-                <button>Đăng ký</button>
+                <button>Gửi</button>
                 
             </div>
         </div>
@@ -278,7 +286,7 @@
             text-align: center;
             padding: 15px 0;
             
-            width: 100vw;
+            width: 100%;
             position: relative;
             left: 0;
             margin: 0;

@@ -31,6 +31,8 @@ Route::middleware([AuthMiddleware::class])->group(function () {
     Route::get('products/showdetail2/{id}', [ProductController::class, 'showdetail2'])->name('products.showdetail2');
     Route::post('products/{id}/buy', [ProductController::class, 'buy'])->name('products.buy');
     Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::delete('orders/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
+
 Route::resource('products', ProductController::class);
     // Các route chỉ dành cho admin
     Route::middleware([AuthMiddleware::class])->group(function () {
@@ -38,7 +40,11 @@ Route::resource('products', ProductController::class);
         Route::resource('categories', CategoryController::class);
         Route::get('categories/{categoryId}/showProducts', [CategoryController::class, 'showProducts'])->name('categories.showProducts');
         Route::post('/categories/{categoryId}/products', [CategoryController::class, 'storeProduct'])->name('categories.storeProduct');
-        
+        Route::get('orders/search', [OrderController::class, 'search'])->name('orders.search');
+        // Nếu bạn muốn điều hướng đến trang hiển thị sản phẩm theo danh mục:
+        Route::get('categories/{categoryId}/showProducts', [CategoryController::class, 'showProducts'])->name('categories.showProducts');
+        Route::put('categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
+
     });
 
     Route::get('/user', [UserController::class, 'index']);

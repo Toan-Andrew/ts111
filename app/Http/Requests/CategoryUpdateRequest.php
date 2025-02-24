@@ -23,9 +23,7 @@ class CategoryUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'detail' => 'required',
-            'price' => 'required'
-        
+            'image'   => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 }

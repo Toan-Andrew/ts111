@@ -57,27 +57,34 @@ class UserController extends Controller
     {
         $user = auth()->user();
 
-        // Debug để xem dữ liệu gửi lên
-        // dd($request->all());
-
+        // Validate dữ liệu, bao gồm trường avatar nếu có
         $request->validate([
             'name'    => 'required|string|max:255',
             'phone'   => 'nullable|string|max:20',
             'address' => 'nullable|string|max:255',
+            'avatar'  => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Kiểm tra file ảnh
         ]);
 
+        // Nếu có file avatar được upload
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            // Lưu file vào thư mục storage/app/public/uploads/avatars
+            $path = $file->storeAs('uploads/avatars', $filename, 'public');
+            $user->avatar = $path;
+        }
+
         // Cập nhật thông tin người dùng
-        $updated = $user->update([
+        $user->update([
             'name'    => $request->name,
             'phone'   => $request->phone,
             'address' => $request->address,
+            // 'avatar' đã được cập nhật nếu có file upload
         ]);
-
-        // Kiểm tra kết quả update (sử dụng dd hoặc Log)
-        // dd($updated);
 
         return redirect()->back()->with('success', 'Thông tin cá nhân đã được cập nhật!');
     }
+
 
 
 

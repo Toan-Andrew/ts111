@@ -19,19 +19,32 @@ class ProductController extends Controller
      */
 
      public function index(Request $request)
-{
-    // Nếu có truyền tham số 'category' thì chỉ lấy danh mục đó và các sản phẩm của nó
-    if ($request->has('category') && $request->category != null) {
-         $categories = Category::with('products')
-                            ->where('id', $request->category)
-                            ->get();
-    } else {
-         // Lấy tất cả các danh mục kèm theo sản phẩm của từng danh mục
-         $categories = Category::with('products')->get();
+    {
+        $allCategories = Category::all();
+        // Lấy tham số tìm kiếm
+        $search = $request->input('search');
+        // Lấy tham số danh mục
+        $categoryId = $request->input('category');
+
+        // Khởi tạo query với eager loading products
+        $query = Category::with(['products' => function ($q) use ($search) {
+            // Nếu có từ khóa, thêm điều kiện where cho products
+            if ($search) {
+                $q->where('name', 'LIKE', '%' . $search . '%');
+            }
+        }]);
+
+        // Nếu có tham số category, chỉ lấy 1 danh mục
+        if ($categoryId) {
+            $query->where('id', $categoryId);
+        }
+
+        // Lấy danh sách categories (với products đã được lọc)
+        $categories = $query->get();
+
+        return view('products.index', compact('categories'));
     }
-    
-    return view('products.index', compact('categories'));
-}
+
 
 
      
@@ -44,26 +57,36 @@ class ProductController extends Controller
                     ->with('i', (request()->input('page', 1) - 1) * 5);
     }
     public function showdetail2($id)
-{
-    $product = Product::findOrFail($id);
-    return view('products.showdetail2', compact('product'));
-}
-public function buy(Request $request, $id)
-{
-    $product = Product::findOrFail($id);
+    {
+        $product = Product::findOrFail($id);
+        // Lấy 4 sản phẩm cùng category, loại trừ sản phẩm hiện tại
+        $similarProducts = Product::where('category_id', $product->category_id)
+                                ->where('id', '!=', $product->id)
+                                ->take(4)
+                                ->get();
 
-    Order::create([
-        'name'       => $request->name,
-        'phone'      => $request->phone,
-        'address'    => $request->address,
-        'email'      => $request->email,  // Lấy email từ form, không dùng Auth::user()->email nếu bạn muốn dùng dữ liệu nhập từ form
-        'price'      => $product->price,
-        'order_time' => now(),
-        'img'        => $product->image ?? 'default_image.jpg', // Nếu cần lưu hình ảnh sản phẩm
-    ]);
+        return view('products.showdetail2', compact('product', 'similarProducts'));
+    }
 
-    return redirect()->route('products.index')->with('success', 'Your order has been placed successfully!');
-}
+    public function buy(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+
+        Order::create([
+            'product_id' => $product->id,
+            'name'       => $request->name,
+            'phone'      => $request->phone,
+            'address'    => $request->address,
+            'email'      => $request->email,  // Lấy email từ form, không dùng Auth::user()->email nếu bạn muốn dùng dữ liệu nhập từ form
+            'price'      => $product->price,
+            'order_time' => now(),
+            'img'        => $product->image ?? 'default_image.jpg', // Nếu cần lưu hình ảnh sản phẩm
+        ]);
+
+        return redirect()->route('products.index')->with('success', 'Your order has been placed successfully!');
+    }
+
+
 
 
 
@@ -118,23 +141,42 @@ public function buy(Request $request, $id)
      * Update the specified resource in storage.
      */
     public function update(ProductUpdateRequest $request, Product $product): RedirectResponse
-    {
-        $validated = $request->validated();
+{
+    $validated = $request->validated();
 
-        // Kiểm tra và xử lý file ảnh khi cập nhật
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $extension;
-            $file->move(public_path('uploads/product/'), $filename);
-            $validated['image'] = 'uploads/product/' . $filename;
-        }
-
-        $product->update($validated);
-
-        return redirect()->route('products.admin')
-                         ->with('success', 'Product updated successfully.');
+    // Xử lý file ảnh nếu có
+    if ($request->hasFile('image')) {
+        $file = $request->file('image');
+        $extension = $file->getClientOriginalExtension();
+        $filename = time() . '.' . $extension;
+        $file->move(public_path('uploads/product/'), $filename);
+        $validated['image'] = 'uploads/product/' . $filename;
     }
+
+    // Xử lý file preview (PDF) nếu có upload
+    if ($request->hasFile('preview')) {
+        $pdfFile = $request->file('preview');
+        $pdfExtension = $pdfFile->getClientOriginalExtension();
+        $pdfFilename = time() . '_preview.' . $pdfExtension;
+        
+        // Đường dẫn thư mục lưu file preview
+        $destinationPath = public_path('uploads/product/previews/');
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
+        }
+        
+        $pdfFile->move($destinationPath, $pdfFilename);
+        $validated['preview'] = 'uploads/product/previews/' . $pdfFilename;
+    }
+
+    $product->update($validated);
+
+    return redirect()->route('products.admin')
+                     ->with('success', 'Product updated successfully.');
+}
+
+
+
 
     /**
      * Remove the specified resource from storage.

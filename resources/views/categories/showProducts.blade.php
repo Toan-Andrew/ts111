@@ -4,9 +4,9 @@
 
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="text-primary">Product List</h2>
+        <h2 class="text-primary">Danh sách sản phẩm</h2>
         <a class="btn btn-outline-secondary btn-sm" href="{{ route('categories.index') }}">
-            <i class="fa fa-arrow-left"></i> Back to Categories
+            <i class="fa fa-arrow-left"></i> Trở về
         </a>
     </div>
 
@@ -21,7 +21,7 @@
     <!-- Nút thêm sản phẩm -->
     <div class="text-end mb-3">
         <a class="btn btn-success" href="{{ route('categories.createProduct',  $category->id) }}">
-            <i class="fa fa-plus"></i> Create New Product
+            <i class="fa fa-plus"></i> Thêm sản phẩm
         </a>
     </div>
 
@@ -44,16 +44,9 @@
                     <p class="card-text text-muted">{{ Str::limit($product->detail, 60) }}</p>
                     <h6 class="text-success">${{ number_format($product->price, 2) }}</h6>
 
-                    <ul class="list-unstyled small">
-                        
-                        <li><strong>Material:</strong> {{ $product->material }}</li>
-                        <li><strong>Frame:</strong> {{ $product->frame ? 'Yes' : 'No' }}</li>
-                        <li><strong>Condition:</strong> {{ $product->condition }}</li>
-                    </ul>
-
                     <div class="d-flex justify-content-between">
                         <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning btn-sm">
-                            <i class="fa-solid fa-pen-to-square"></i> Edit
+                            <i class="fa-solid fa-pen-to-square"></i> Chỉnh sửa
                         </a>
 
                         <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="d-inline">
@@ -61,7 +54,7 @@
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm"
                                 onclick="return confirm('Are you sure?')">
-                                <i class="fa-solid fa-trash"></i> Delete
+                                <i class="fa-solid fa-trash"></i> Xóa
                             </button>
                         </form>
                     </div>

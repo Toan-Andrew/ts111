@@ -26,6 +26,7 @@ class ProductStoreRequest extends FormRequest
             'detail' => 'required',
             'image' => 'nullable|mimes:png,jpg,jpeg,webp',
             'price' => 'required',
+            'preview' => 'nullable|mimes:pdf|max:10000',
         ];
     
     }

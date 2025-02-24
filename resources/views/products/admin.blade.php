@@ -3,13 +3,16 @@
 @section('content')
 
 <div class="card mt-5">
-    <h2 class="card-header">Laravel 11 CRUD Example from scratch - ItSolutionStuff.com</h2>
+    <h2 class="card-header">Danh sách sản phẩm</h2>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-success btn-sm" href="{{ route('categories.index') }}"> <i class="fa fa-plus"></i>
+        back</a>
+        </div>
     <div class="card-body">
 
         @session('success')
         <div class="alert alert-success" role="alert"> {{ $value }} </div>
         @endsession
-
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <a class="btn btn-success btn-sm" href="{{ route('products.create') }}"> <i class="fa fa-plus"></i> Create
                 New Product</a>

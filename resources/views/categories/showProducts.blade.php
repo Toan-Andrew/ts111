@@ -46,7 +46,7 @@
 
                     <div class="d-flex justify-content-between">
                         <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning btn-sm">
-                            <i class="fa-solid fa-pen-to-square"></i> Chỉnh sửa
+                            <i class="fa fa-pen"></i> Chỉnh sửa
                         </a>
 
                         <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="d-inline">
@@ -54,7 +54,7 @@
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm"
                                 onclick="return confirm('Are you sure?')">
-                                <i class="fa-solid fa-trash"></i> Xóa
+                                <i class="fa fa-trash"></i> Xóa
                             </button>
                         </form>
                     </div>

@@ -27,7 +27,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="inputImage" class="form-label"><strong>Ảnh:</strong></label>
+                <label for="inputImage" class="form-label"><strong>Hình ảnh minh họa:</strong></label>
                 <input type="file" name="image" class="form-control @error('image') is-invalid @enderror"
                     id="inputImage">
                 @error('image')

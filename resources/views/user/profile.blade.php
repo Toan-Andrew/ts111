@@ -16,7 +16,7 @@
             <p class="card-text"><strong>Địa chỉ:</strong> {{ $user->address ?? 'Chưa cập nhật' }}</p>
             <!-- Nút Edit Profile -->
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
-                Edit Profile
+              Chỉnh sửa Profile
             </button>
             <a href="{{ url('/products') }}" class="btn btn-secondary">Quay lại trang chủ</a>
         </div>

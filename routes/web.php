@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Controllers\RateController;
+use App\Http\Controllers\SuggestionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,7 +22,7 @@ Route::post('post-registration', [AuthController::class, 'postRegistration'])->n
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('profile', [UserController::class, 'profile'])->name('profile')->middleware('auth');
 Route::put('profile', [UserController::class, 'updateProfile'])->name('profile.update')->middleware('auth');
-
+Route::post('suggestions', [SuggestionController::class, 'store'])->name('suggestions.store');
 
 
 Route::middleware([AuthMiddleware::class])->group(function () {
@@ -44,6 +45,9 @@ Route::resource('products', ProductController::class);
         // Nếu bạn muốn điều hướng đến trang hiển thị sản phẩm theo danh mục:
         Route::get('categories/{categoryId}/showProducts', [CategoryController::class, 'showProducts'])->name('categories.showProducts');
         Route::put('categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
+        Route::get('admin/suggestions', [SuggestionController::class, 'index'])->name('admin.suggestions.index');
+
+        Route::get('suggestions/search', [SuggestionController::class, 'search'])->name('suggestions.search');
 
     });
 

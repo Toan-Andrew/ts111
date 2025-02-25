@@ -105,21 +105,41 @@ class ProductController extends Controller
     {
         $validated = $request->validated();
 
-        // Kiểm tra và xử lý file ảnh
+        // Xử lý file ảnh nếu có
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension(); // Lấy phần mở rộng của file
-            $filename = time() . '.' . $extension; // Tạo tên file duy nhất
-            $file->move(public_path('uploads/product/'), $filename); // Lưu file vào thư mục
-            $validated['image'] = 'uploads/product/' . $filename; // Lưu đường dẫn vào database
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extension;
+            $file->move(public_path('uploads/product/'), $filename);
+            $validated['image'] = 'uploads/product/' . $filename;
         }
 
-        // Tạo sản phẩm với dữ liệu đã xác thực
+        // Xử lý file preview (PDF) nếu có upload
+        if ($request->hasFile('preview')) {
+            $pdfFile = $request->file('preview');
+            $pdfExtension = $pdfFile->getClientOriginalExtension();
+            $pdfFilename = time() . '_preview.' . $pdfExtension;
+            
+            $destinationPath = public_path('uploads/product/previews/');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            
+            // Debug: kiểm tra file preview đã nhận được chưa
+            // dd($pdfFile);
+
+            $pdfFile->move($destinationPath, $pdfFilename);
+            $validated['preview'] = 'uploads/product/previews/' . $pdfFilename;
+        }
+
+        // Tạo product mới với dữ liệu validated (bao gồm cả preview nếu có)
         Product::create($validated);
 
         return redirect()->route('products.admin')
-                         ->with('success', 'Product created successfully.');
+                        ->with('success', 'Product created successfully.');
     }
+
+
 
     /**
      * Display the specified resource.

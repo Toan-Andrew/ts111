@@ -4,28 +4,29 @@
 
 <div class="card mt-5">
     <h2 class="card-header">Danh sách sản phẩm</h2>
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <a class="btn btn-success btn-sm" href="{{ route('categories.index') }}"> <i class="fa fa-plus"></i>
-        back</a>
-        </div>
     <div class="card-body">
 
         @session('success')
         <div class="alert alert-success" role="alert"> {{ $value }} </div>
         @endsession
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <a class="btn btn-success btn-sm" href="{{ route('products.create') }}"> <i class="fa fa-plus"></i> Create
-                New Product</a>
+        <div class="d-flex justify-content-end gap-2">
+            <a class="btn btn-secondary btn-sm" href="{{ route('categories.index') }}">
+                Trở lại
+            </a>
+            <a class="btn btn-success btn-sm" href="{{ route('products.create') }}">
+                <i class="fa fa-plus"></i> Thêm sách mới
+            </a>
         </div>
+
 
         <table class="table table-bordered table-striped mt-4">
             <thead>
                 <tr>
                     <th width="80px">No</th>
-                    <th>Name</th>
-                    <th>Details</th>
-                    <th>Price</th> <!-- Thêm cột Price -->
-                    <th>Image</th>
+                    <th>Tên sách</th>
+                    <th>Mô tả</th>
+                    <th>Giá tiền</th> <!-- Thêm cột Price -->
+                    <th>Hình ảnh</th>
                     <th width="250px">Action</th>
                 </tr>
             </thead>
@@ -47,17 +48,17 @@
                     <td>
                         <form action="{{ route('products.destroy',$product->id) }}" method="POST">
 
-                            <a class="btn btn-info btn-sm" href="{{ route('products.show',$product->id) }}"><i
-                                    class="fa-solid fa-list"></i> Show</a>
+                            <a class="btn btn-info btn-sm" href="{{ route('products.show',$product->id) }}"> 
+                            <i class="fa fa-eye"></i> Xem chi tiết</a>
 
-                            <a class="btn btn-primary btn-sm" href="{{ route('products.edit',$product->id) }}"><i
-                                    class="fa-solid fa-pen-to-square"></i> Edit</a>
+                            <a class="btn btn-primary btn-sm" href="{{ route('products.edit',$product->id) }}">
+                            <i class="fa fa-pen"></i>  Chỉnh sửa</a>
 
                             @csrf
                             @method('DELETE')
 
-                            <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i>
-                                Delete</button>
+                            <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>
+                                Xóa</button>
                         </form>
                     </td>
                 </tr>

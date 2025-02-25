@@ -37,13 +37,13 @@
                         <li class="nav-item">
                             <form action="{{ route('logout') }}" method="GET" class="d-inline">
                                 @csrf
-                                <button type="submit" class="btn btn-danger">Logout</button>
+                                <button type="submit" class="btn btn-danger">Đăng xuất</button>
                             </form>
                         </li>
                     @else
                         <!-- Nút Login nếu người dùng chưa đăng nhập -->
                         <li class="nav-item">
-                            <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
+                            <a href="{{ route('login') }}" class="btn btn-primary">Đăng nhập</a>
                         </li>
                     @endif
                 </ul>
@@ -59,7 +59,7 @@
                 <div class="input-group rounded shadow-sm">
                     <input type="text" class="form-control" name="search" placeholder="Search for products..."
                         value="{{ request('search') }}">
-                    <button type="submit" class="btn btn-dark">Search</button>
+                    <button type="submit" class="btn btn-dark">Tìm kiếm</button>
                 </div>
             </div>
         </div>
@@ -238,17 +238,27 @@
     @endforeach
 
 
-    <!-- Footer Section -->
     <footer class="custom-footer">
         <div class="container">
-            <div class="newsletter-content">
-                <i class="fa fa-envelope"></i>
-                <span>HÒM THƯ GÓP Ý</span>
-                <input type="email" placeholder="Nhập ý kiến của bạn">
-                <button>Gửi</button>
+            <div class="newsletter-content d-flex justify-content-center align-items-center flex-nowrap text-center">
+                <i class="fa fa-envelope me-2" style="font-size: 24px;"></i>
+                <span class="me-3" style="font-size: 18px; font-weight: bold; white-space: nowrap;">HÒM THƯ GÓP Ý</span>
+                <form action="{{ route('suggestions.store') }}" method="POST" class="d-flex align-items-center">
+                    @csrf
+                    @if(Auth::check())
+                        <input type="hidden" name="name" value="{{ Auth::user()->name }}">
+                        <input type="hidden" name="email" value="{{ Auth::user()->email }}">
+                    @endif
+                    <input type="text" name="message" class="form-control me-2" placeholder="Nhập ý kiến của bạn" required style="max-width: 400px;">
+                    <button type="submit" class="btn btn-primary">Gửi</button>
+                </form>
             </div>
         </div>
     </footer>
+
+
+
+
 
     <footer class="bg-light py-4">
         <div class="container">
@@ -299,7 +309,7 @@
         </div>
     </footer>
     <footer class="custom-footer">
-        <p class="mb-0">© 2025 MyShop. All Rights Reserved.</p>
+        <p class="mb-0">© 2025 BrainyReads. All Rights Reserved.</p>
     </footer>
 </div>
 

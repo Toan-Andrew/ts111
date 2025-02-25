@@ -31,6 +31,11 @@
                         </button>
                     </li>
                     <li class="nav-item">
+                        <button id="btnShowSuggestions" class="btn btn-outline-warning btn-lg mx-2">
+                            Hòm thư góp ý
+                        </button>
+                    </li>
+                    <li class="nav-item">
                         <a id="btnAdd" href="{{ route('categories.create') }}" class="btn btn-success btn-lg mx-2">
                             <i class="fa fa-plus"></i> Thêm loại sách mới
                         </a>
@@ -71,10 +76,10 @@
                                 <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-warning btn-sm">
                                     <i class="fa fa-pen"></i> Chỉnh sửa
                                 </a>
-                                <form action="{{ route('categories.destroy', $category->id) }}" method="POST"
-                                    class="d-inline-block" onsubmit="return confirm('Are you sure?');">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">
+                                <form action="{{ route('categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                                    @csrf 
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm w-100">
                                         <i class="fa fa-trash"></i> Xóa
                                     </button>
                                 </form>
@@ -82,6 +87,7 @@
                                     <i class="fa fa-plus"></i> Thêm sản phẩm
                                 </a>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -137,19 +143,65 @@
                 {{ $orders->links() }}
             </div>
         </div>
+        <!-- Phần Hòm thư góp ý (Feedback) -->
+        <div id="suggestionsSection" style="display: none;">
+            <!-- <form method="GET" action="{{ route('suggestions.search') }}" class="mb-3">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Search feedback by name or email" value="{{ request('search') }}">
+                    <button type="submit" class="btn btn-primary">
+                        Tìm kiếm
+                    </button>
+                </div>
+            </form> -->
+            <div class="text-center"><h2>Hòm thư góp ý</h2></div>
+            
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover shadow-sm">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>Tên người dùng</th>
+                            <th>Email</th>
+                            <th>Nội dung góp ý</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($suggestions as $suggestion)
+                        <tr>
+                            <td>{{ $suggestion->name }}</td>
+                            <td>{{ $suggestion->email }}</td>
+                            <td>{{ $suggestion->message }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-center mt-4">
+                {{ $suggestions->links() }}
+            </div>
+        </div>
 
         
     </div>
 <script>
+        document.getElementById("btnShowCategories").addEventListener("click", function() {
+        document.getElementById("categoriesSection").style.display = "block";
+        document.getElementById("ordersSection").style.display = "none";
+        document.getElementById("suggestionsSection").style.display = "none";
+    });
+
     document.getElementById("btnShowOrders").addEventListener("click", function() {
         document.getElementById("categoriesSection").style.display = "none";
         document.getElementById("ordersSection").style.display = "block";
+        document.getElementById("suggestionsSection").style.display = "none";
     });
 
-    document.getElementById("btnShowCategories").addEventListener("click", function() {
-        document.getElementById("categoriesSection").style.display = "block";
+    document.getElementById("btnShowSuggestions").addEventListener("click", function() {
+        document.getElementById("categoriesSection").style.display = "none";
         document.getElementById("ordersSection").style.display = "none";
+        document.getElementById("suggestionsSection").style.display = "block";
     });
+
     window.addEventListener('DOMContentLoaded', function() {
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('search')) {
@@ -231,10 +283,10 @@
     </footer>
     <!-- Footer -->
     <footer class="custom-footer">
-        <p class="mb-0">© 2025 MyShop. All Rights Reserved.</p>
+        <p class="mb-0">© 2025 BrainyReads. All Rights Reserved.</p>
     </footer>
 <style>
-        #btnShowCategories,#btnAdd,#btnlogout,
+        #btnShowCategories,#btnAdd,#btnlogout,#btnShowSuggestions,
         #btnShowOrders {
             background-color: #4CAF50; /* Xanh lá cho Categories */
             border: none;
@@ -261,7 +313,7 @@
         }
         /* Hiệu ứng hover */
         #btnShowCategories:hover,#btnAdd:hover,
-        #btnShowOrders:hover {
+        #btnShowOrders:hover, #btnShowSuggestions:hover {
             opacity: 0.8; /* Làm mờ nhẹ khi hover */
             transform: scale(1.05); /* Nhẹ nhàng phóng to một chút */
         }

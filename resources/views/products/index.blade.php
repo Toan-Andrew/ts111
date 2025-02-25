@@ -104,6 +104,10 @@
                     BrainyReads là nơi bạn có thể tìm thấy những quyển sách chất lượng, giúp bạn mở rộng kiến thức và khám phá những câu chuyện thú vị.
                     Chúng tôi cung cấp đa dạng các thể loại sách, từ kinh doanh, tâm lý, nghệ thuật đến khoa học và công nghệ. Hãy cùng khám phá và trải nghiệm!
                 </p>
+                <p class="lead" style="color: rgb(255, 0, 0); font-family: Charmonman;">
+                    If you can't fly, then run. If you can't run, then walk. If you walk, then crawl.
+                    But no matter what you do, you must keep moving forward.
+                </p>
             </div>
         </div>
     </div>
@@ -428,5 +432,6 @@
         container.scrollBy({ left: 300, behavior: 'smooth' });
     }
 </script>
+<link href="https://fonts.googleapis.com/css2?family=Lobster&family=Pacifico&family=Charmonman:wght@400;700&display=swap" rel="stylesheet">
 
 @endsection

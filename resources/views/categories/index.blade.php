@@ -112,6 +112,7 @@
                             <th>Số điện thoại</th>
                             <th>Địa chỉ</th>
                             <th>Email</th>
+                            <th>Tên sản phẩm</th>
                             <th>Giá tiền</th>
                             <th>Thời gian đặt hàng</th>
                         </tr>
@@ -123,6 +124,7 @@
                             <td>{{ $order->phone }}</td>
                             <td>{{ $order->address }}</td>
                             <td>{{ $order->email }}</td>
+                            <td>{{ optional($order->product)->name ?? 'N/A' }}</td>
                             <td class="text-success">${{ number_format($order->price, 2) }}</td>
                             <td>{{ $order->order_time }}</td>
                         </tr>

@@ -28,17 +28,26 @@ class OrderController extends Controller
     public function search(Request $request): View
     {
         $query = Order::query();
+
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function($q) use ($search) {
                 $q->where('email', 'LIKE', '%' . $search . '%')
-                ->orWhere('name', 'LIKE', '%' . $search . '%')
-                ->orWhere('phone', 'LIKE', '%' . $search . '%');
+                ->orWhere('phone', 'LIKE', '%' . $search . '%')
+                // Tìm kiếm theo tên sản phẩm qua quan hệ
+                ->orWhereHas('product', function($query) use ($search) {
+                    $query->where('name', 'LIKE', '%' . $search . '%');
+                });
             });
         }
+
         $orders = $query->latest()->paginate(6);
+
         return view('orders.search', compact('orders'));
     }
+
+
+
 
 
     public function destroy($id)
@@ -48,6 +57,7 @@ class OrderController extends Controller
 
         return redirect()->route('orders.index')->with('success', 'Order deleted successfully!');
     }
+
 
 
 }

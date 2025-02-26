@@ -33,11 +33,11 @@ BrainyReads là một website thương mại điện tử chuyên cung cấp và
 ## **🚀 Cài đặt (Installation)**
 1. **Cài đặt dự án bằng lệnh:**
    ```bash
-   composer create-project --prefer-dist laravel/laravel banTranh
+   composer create-project --prefer-dist laravel/laravel ts111
    ```
 2. Di chuyển vào thư mục dự án:  
    ```bash
-   cd banTranh
+   cd ts111
    ```
 3. Cài đặt các thư viện phụ thuộc:  
    ```bash

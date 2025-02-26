@@ -8,7 +8,7 @@ From Phenikaa University
 BrainyReads là một website thương mại điện tử chuyên cung cấp và phân phối các loại sách đa dạng, từ sách giáo khoa, sách kỹ năng, đến tiểu thuyết và sách chuyên ngành. Với giao diện thân thiện và dễ sử dụng, nền tảng này giúp người dùng dễ dàng tìm kiếm, chọn mua và quản lý bộ sưu tập sách cá nhân một cách nhanh chóng, tạo ra một trải nghiệm mua sắm sách trực tuyến tối ưu và thuận tiện nhất.
 
 
- - Detailed project documentation is [here](https://drive.google.com/file/d/17nAGMk5YoxeQELg16IybnZEFi_HVwa88/view?usp=sharing)
+ - Detailed project documentation is [here](https://drive.google.com/file/d/1GMC3Xkb_7E_38nj__eUz10EEAtnHFHmf/view?usp=sharing)
  - API documentaion is [here](https://github.com/Toan-Andrew/ts111/wiki)
  - Github: https://github.com/Toan-Andrew/ts111
 ---

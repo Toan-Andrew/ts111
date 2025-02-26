@@ -82,5 +82,69 @@ BrainyReads là một website thương mại điện tử chuyên cung cấp và
 ---
 
 🚀 Chúc bạn có trải nghiệm tuyệt vời cùng **BrainyReads**! 📚✨
-```
+
+## Hình ảnh trang web
+
+### 🏠 Giao diện trang giới thiệu  
+![Image](https://github.com/user-attachments/assets/2048a6d4-87e0-43eb-bbbb-6e6a8f366218)
+
+### 🔐 Giao diện đăng nhập  
+![Giao diện đăng nhập](https://github.com/user-attachments/assets/a9d58371-ded0-4fb6-abd9-82e9b33aa768)
+
+### 📝 Giao diện đăng ký  
+![Giao diện đăng ký](https://github.com/user-attachments/assets/0ee5504f-bb24-400b-a358-76c9fd3e7919)
+
+### 🏡 Giao diện trang chủ  
+![Giao diện trang chủ](https://github.com/user-attachments/assets/9fe70582-fa2f-4c56-a4e1-029618e39957)
+
+### 📂 Giao diện chọn loại sản phẩm  
+![Giao diện chọn loại sản phẩm](https://github.com/user-attachments/assets/7fad9f5e-ec9d-4505-92d0-f35ad95cc190)
+
+### 🔍 Giao diện xem chi tiết sản phẩm  
+![Giao diện xem chi tiết sản phẩm](https://github.com/user-attachments/assets/1e09535b-5b93-4bf4-8f8a-2c0e51329ab2)
+
+### 👀 Giao diện Xem trước sản phẩm 
+![Giao diện Xem trước sản phẩm](https://github.com/user-attachments/assets/3bf95fba-6659-49ab-8a37-cbd36d067756)
+
+### 🛒 Giao diện Mua sản phẩm  
+![Giao diện Mua sản phẩm](https://github.com/user-attachments/assets/0c388607-1b79-4183-b89d-974d285942bf)
+
+### 📦 Giao diện Đơn hàng đã mua
+![Giao diện Đơn hàng đã mua](https://github.com/user-attachments/assets/9c8ca5e1-5ffe-4b55-a57b-16c9ba4fb83e)
+
+### 📄 Giao diện Xem chi tiết sản phẩm đã mua
+![Giao diện Xem chi tiết sản phẩm đã mua](https://github.com/user-attachments/assets/5f6ee9c3-0fae-4b0e-9219-5408ccfce176)
+
+### 👤 Giao diện Thông tin tài khoản người dùng
+![Giao diện Thông tin tài khoản người dùng](https://github.com/user-attachments/assets/196adb17-ed6d-47f2-8b09-67f50cd08d65)
+
+### 🔄 Giao diện Cập nhập thông tin người dùng 
+![Giao diện Cập nhập thông tin người dùng](https://github.com/user-attachments/assets/f4d29b79-0cb4-4134-949f-f6a08a9cc35d)
+
+### 🏢 Giao diện Trang chủ Admin  
+![Giao diện Trang chủ Admin](https://github.com/user-attachments/assets/d0db3320-f9e6-451d-92a1-e833cdb7e81d)
+
+### ➕ Giao diện Thêm loại sản phẩm 
+![Giao diện Thêm loại sản phẩm](https://github.com/user-attachments/assets/ea118109-7f62-471d-b6d8-1da062a2ef5a)
+
+### ✏️ Giao diện Chỉnh sửa loại sản phẩm  
+![Giao diện Chỉnh sửa loại sản phẩm](https://github.com/user-attachments/assets/8cefcfb1-0fbe-4c16-b834-c836eb9c8a4a)
+
+### 📋 Giao diện Danh sách sản phẩm trong loại sản phẩm  
+![Giao diện Danh sách sản phẩm trong loại sản phẩm](https://github.com/user-attachments/assets/082d93ec-37d6-45ae-a07e-ed0c4501ef86)
+
+### 🗂️ Giao diện Danh sách sản phẩm đã tạo  
+![Giao diện Danh sách sản phẩm đã tạo](https://github.com/user-attachments/assets/53bfeb99-1e15-4790-bc74-5f3a174ef093)
+
+### ➕ Giao diện Thêm sản phẩm  
+![Giao diện Thêm sản phẩm](https://github.com/user-attachments/assets/e119659d-d4d7-49df-88ff-a2fa563538d1)
+
+### ✏️ Giao diện Chỉnh sửa sản phẩm
+![Giao diện Chỉnh sửa sản phẩm](https://github.com/user-attachments/assets/f6625209-2294-4c8b-a1ad-8200f3e0b6b2)
+
+### 📦 Giao diện Danh sách các đơn hàng
+![Giao diện Danh sách các đơn hàng](https://github.com/user-attachments/assets/d1e92328-0855-49f7-8b13-fa4f019a1c5f)
+
+### 📦 Giao diện Danh sách đóng góp ý kiến  
+![Giao diện Danh sách các đơn hàng](https://github.com/user-attachments/assets/47b22c50-905f-4dac-aa21-989799e5deb6)
 

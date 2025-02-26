@@ -148,3 +148,18 @@ BrainyReads là một website thương mại điện tử chuyên cung cấp và
 ### 📦 Giao diện Danh sách đóng góp ý kiến  
 ![Giao diện Danh sách các đơn hàng](https://github.com/user-attachments/assets/47b22c50-905f-4dac-aa21-989799e5deb6)
 
+## Tài liệu tham khảo
+
+- [Laravel Documentation 11.x](https://laravel.com/docs/11.x)
+- [PHP Documentation](https://www.php.net/docs.php)
+- Slide bài giảng môn học Thiết kế Web nâng cao
+
+## Triển khai
+
+- [Trang triển khai ứng dụng](https://automatic-potato-v66wp4qg5wxghp9-8001.app.github.dev/)
+
+## Video demo
+
+Xem video demo của ứng dụng tại link dưới đây:
+
+- [Xem Video Demo](https://drive.google.com/file/d/1OpfDMILuyVyPnxFbu8IRszh0WZ1ucwwa/view?usp=sharing)

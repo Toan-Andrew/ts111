@@ -35,27 +35,24 @@ BrainyReads là một website thương mại điện tử chuyên cung cấp và
    ```bash
    composer create-project --prefer-dist laravel/laravel ts111
    ```
-2. Di chuyển vào thư mục dự án:  
-   ```bash
-   cd ts111
-   ```
-3. Cài đặt các thư viện phụ thuộc:  
+
+2. Cài đặt các thư viện phụ thuộc:  
    ```bash
    composer install
    ```
-4. Sao chép file `.env.example` thành `.env`:  
+3. Sao chép file `.env.example` thành `.env`:  
    ```bash
    cp .env.example .env
    ```
-5. Tạo khoá ứng dụng (APP_Key) cho Laravel:  
+4. Tạo khoá ứng dụng (APP_Key) cho Laravel:  
    ```bash
    php artisan key:generate
    ```
-6. Chạy migration để tạo các bảng trong cơ sở dữ liệu:  
+5. Chạy migration để tạo các bảng trong cơ sở dữ liệu:  
    ```bash
    php artisan migrate
    ```
-7. Khởi động server:  
+6. Khởi động server:  
    ```bash
    php artisan serve
    ```

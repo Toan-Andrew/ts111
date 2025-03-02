@@ -5,7 +5,7 @@ use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Product;
-
+use App\Models\User;
 
 class OrderController extends Controller
 {
@@ -23,7 +23,8 @@ class OrderController extends Controller
             });
         }
 
-        $orders = $query->latest()->paginate(5);
+        $orders = Order::where('user_id', auth()->id())->latest()->paginate(5);
+
 
         return view('orders.index', compact('orders'));
     }
@@ -68,7 +69,8 @@ class OrderController extends Controller
             return redirect()->back()->with('error', 'Sản phẩm không tồn tại!');
         }
         Order::create([
-            'product_id' => $id,
+            'user_id'   => auth()->id(), // hoặc $request->user()->id,
+            'product_id'=> $product->id,
             'name' => $request->name,
             'phone' => $request->phone,
             'address' => $request->address,

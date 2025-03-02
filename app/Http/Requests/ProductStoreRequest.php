@@ -19,15 +19,16 @@ class ProductStoreRequest extends FormRequest
      *
      * @return array|string>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            'name' => 'required',
-            'detail' => 'required',
-            'image' => 'nullable|mimes:png,jpg,jpeg,webp',
-            'price' => 'required',
-            'preview' => 'nullable|mimes:pdf|max:10000',
+            'name' => 'required|string|max:255',
+            'detail' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'preview' => 'nullable|mimes:pdf|max:5120',
+            'quantity' => 'required|integer|min:1', // Rule kiểm tra số lượng sản phẩm
         ];
-    
     }
+
 }

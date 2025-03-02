@@ -34,23 +34,23 @@ class CategoryController extends Controller
 
         // Lấy danh sách các danh mục
         $categories = Category::latest()->paginate(6); // Giả sử bạn có Category model
-
-        $suggestions = Suggestion::latest()->paginate(10);
+        $orders = Order::latest()->paginate(5);
+        $suggestions = Suggestion::latest()->paginate(5);
 
         return view('categories.index', compact('orders', 'categories','suggestions')); // Trả về view với danh sách đơn hàng và danh mục
     }
 
 
     public function showProducts($categoryId): View
-{
-    // Lấy danh mục theo ID
-    $category = Category::findOrFail($categoryId);
-    
-    // Lấy các sản phẩm thuộc danh mục này
-    $products = Product::where('category_id', $categoryId)->paginate(6);
-    
-    return view('categories.showProducts', compact('category', 'products'));
-}
+    {
+        // Lấy danh mục theo ID
+        $category = Category::findOrFail($categoryId);
+        
+        // Lấy các sản phẩm thuộc danh mục này
+        $products = Product::where('category_id', $categoryId)->paginate(6);
+        
+        return view('categories.showProducts', compact('category', 'products'));
+    }
 
 
 
@@ -107,28 +107,28 @@ class CategoryController extends Controller
      * Update the specified category in storage.
      */
     public function update(CategoryUpdateRequest $request, Category $category): RedirectResponse
-{
-    $validated = $request->validated();
+    {
+        $validated = $request->validated();
 
-    // Debug: in ra dữ liệu validated
-    // dd($validated);
+        // Debug: in ra dữ liệu validated
+        // dd($validated);
 
-    if ($request->hasFile('image')) {
-        $file = $request->file('image');
-        $extension = $file->getClientOriginalExtension();
-        $filename = time() . '.' . $extension;
-        $file->move(public_path('uploads/category/'), $filename);
-        $validated['image'] = 'uploads/category/' . $filename;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extension;
+            $file->move(public_path('uploads/category/'), $filename);
+            $validated['image'] = 'uploads/category/' . $filename;
+        }
+
+        // Debug: in ra validated sau khi xử lý file
+        // dd($validated);
+
+        $category->update($validated);
+
+        return redirect()->route('categories.index')
+                        ->with('success', 'Category updated successfully.');
     }
-
-    // Debug: in ra validated sau khi xử lý file
-    // dd($validated);
-
-    $category->update($validated);
-
-    return redirect()->route('categories.index')
-                     ->with('success', 'Category updated successfully.');
-}
 
 
     /**
@@ -151,31 +151,37 @@ class CategoryController extends Controller
     /**
      * Store a newly created product in storage.
      */
-    public function storeProduct(Request $request, $categoryId): RedirectResponse
+    public function storeProduct(Request $request, $categoryId)
     {
-        $category = Category::findOrFail($categoryId);
-
-        $validated = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
             'detail' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'price' => 'required|numeric|min:0',
-            
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'preview' => 'nullable|mimes:pdf|max:5120',
+            'quantity' => 'required|integer|min:1'
         ]);
 
+        $product = new Product();
+        $product->name = $request->name;
+        $product->detail = $request->detail;
+        $product->price = $request->price;
+        $product->quantity = $request->quantity; // Thêm số lượng sản phẩm
+        $product->category_id = $categoryId;
+
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $extension;
-            $file->move(public_path('uploads/products/'), $filename);
-            $validated['image'] = 'uploads/products/' . $filename;
+            $imagePath = $request->file('image')->store('products', 'public');
+            $product->image = $imagePath;
         }
 
-        $validated['category_id'] = $categoryId;
+        if ($request->hasFile('preview')) {
+            $previewPath = $request->file('preview')->store('previews', 'public');
+            $product->preview = $previewPath;
+        }
 
-        Product::create($validated);
+        $product->save();
 
-        return redirect()->route('categories.showProducts', $categoryId)
-            ->with('success', 'Product created successfully.');
+        return redirect()->route('categories.index')->with('success', 'Sản phẩm đã được thêm thành công!');
     }
+
 }

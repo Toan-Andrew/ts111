@@ -42,6 +42,15 @@
                 @enderror
             </div>
 
+            <!-- Số lượng sản phẩm (Floating Label) -->
+            <div class="form-floating mb-3">
+                    <input type="number" name="quantity" class="form-control @error('quantity') is-invalid @enderror" 
+                        id="inputQuantity" placeholder="Số lượng sản phẩm" value="{{ old('quantity', 1) }}" min="1">
+                    <label for="inputQuantity"><strong>Số lượng sản phẩm:</strong></label>
+                    @error('quantity')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+            </div>
 
             <div class="mb-3">
                 <label for="inputImage" class="form-label"><strong>Hình ảnh:</strong></label>

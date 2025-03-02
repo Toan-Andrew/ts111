@@ -103,12 +103,9 @@
             <form method="GET" action="{{ route('categories.index') }}" class="mb-3">
                 <div class="input-group">
                     <input type="text" name="search" class="form-control" placeholder="Search by email or name" value="{{ request('search') }}">
-                    <button type="submit" class="btn btn-primary">
-                        Tìm kiếm
-                    </button>
+                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
                 </div>
             </form>
-
 
             <div class="table-responsive">
                 <table class="table table-bordered table-hover shadow-sm">
@@ -121,11 +118,13 @@
                             <th>Tên sản phẩm</th>
                             <th>Giá tiền</th>
                             <th>Thời gian đặt hàng</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($orders as $order)
-                        <tr>
+                        <tr class="text-center">
                             <td>{{ $order->name }}</td>
                             <td>{{ $order->phone }}</td>
                             <td>{{ $order->address }}</td>
@@ -133,27 +132,43 @@
                             <td>{{ optional($order->product)->name ?? 'N/A' }}</td>
                             <td class="text-success">${{ number_format($order->price, 2) }}</td>
                             <td>{{ $order->order_time }}</td>
+                            <td>
+                                <!-- Form cập nhật trạng thái đơn hàng -->
+                                <form action="{{ route('orders.update', $order->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <select name="status" class="form-select order-status" onchange="this.form.submit()">
+                                        <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>Chờ duyệt</option>
+                                        <option value="shipping" {{ $order->status === 'shipping' ? 'selected' : '' }}>Đang vận chuyển</option>
+                                        <option value="paid" {{ $order->status === 'paid' ? 'selected' : '' }}>Thành công</option>
+                                    </select>
+                                </form>
+                            </td>
+                            <td>
+                                <!-- Nút Xóa đơn hàng -->
+                                <form action="{{ route('orders.destroy', $order->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this order?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                                </form>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
 
+            <!-- Pagination cho đơn hàng -->
             <div class="d-flex justify-content-center mt-4">
-                {{ $orders->links() }}
+                {{ $orders->links('pagination::bootstrap-4') }}
             </div>
         </div>
+
         <!-- Phần Hòm thư góp ý (Feedback) -->
         <div id="suggestionsSection" style="display: none;">
-            <!-- <form method="GET" action="{{ route('suggestions.search') }}" class="mb-3">
-                <div class="input-group">
-                    <input type="text" name="search" class="form-control" placeholder="Search feedback by name or email" value="{{ request('search') }}">
-                    <button type="submit" class="btn btn-primary">
-                        Tìm kiếm
-                    </button>
-                </div>
-            </form> -->
-            <div class="text-center"><h2>Hòm thư góp ý</h2></div>
+            <div class="text-center mb-3">
+                <h2>Hòm thư góp ý</h2>
+            </div>
             
             <div class="table-responsive">
                 <table class="table table-bordered table-hover shadow-sm">
@@ -166,7 +181,7 @@
                     </thead>
                     <tbody>
                         @foreach($suggestions as $suggestion)
-                        <tr>
+                        <tr class="text-center">
                             <td>{{ $suggestion->name }}</td>
                             <td>{{ $suggestion->email }}</td>
                             <td>{{ $suggestion->message }}</td>
@@ -176,10 +191,12 @@
                 </table>
             </div>
 
+            <!-- Pagination cho góp ý -->
             <div class="d-flex justify-content-center mt-4">
-                {{ $suggestions->links() }}
+                {{ $suggestions->links('pagination::bootstrap-4')  }}
             </div>
         </div>
+
 
         
     </div>
@@ -210,8 +227,29 @@
         }
     });
 
+    document.querySelectorAll('.order-status').forEach(function(selectElement) {
+        selectElement.addEventListener('change', function() {
+            let form = this.closest('form');
+            let formData = new FormData(form);
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    alert('Trạng thái đơn hàng đã được cập nhật!');
+                }
+            })
+            .catch(error => console.error(error));
+        });
+    });
+
 </script>
-    <!-- Footer -->
+    <!-- Footer
     <footer class="custom-footer">
         <div class="container">
             <div class="newsletter-content">
@@ -225,15 +263,12 @@
             </div>
         </div>
     </footer>
-
-    <!-- Footer -->
     <footer class="bg-light py-4">
         <div class="container">
-            <div class="row">
+            <div class="row"> -->
 
             <!-- Logo và thông tin liên hệ -->
-            <div class="col-md-3 mb-4">
-                <!-- Thay đường dẫn ảnh logo tại đây -->
+            <!-- <div class="col-md-3 mb-4">
                 <p class="mb-1">
                     <strong>BrainyReads</strong><br>
                     Địa chỉ VP Hà Nội: Phố Nguyễn Trác<br>
@@ -243,10 +278,10 @@
                 <p class="mb-0">
                     Hotline: <a href="tel:0898657616" class="text-dark">0974838034</a>
                 </p>
-            </div>
+            </div> -->
 
             <!-- Hỗ trợ khách hàng -->
-            <div class="col-md-3 mb-4">
+            <!-- <div class="col-md-3 mb-4">
                 <h5 class="fw-bold mb-3">Hỗ trợ khách hàng</h5>
                 <ul class="list-unstyled">
                     <li><a href="#" class="text-decoration-none text-dark">Hướng dẫn mua hàng</a></li>
@@ -254,10 +289,10 @@
                     <li><a href="#" class="text-decoration-none text-dark">Chính sách bảo hành</a></li>
                     <li><a href="#" class="text-decoration-none text-dark">Chính sách đổi trả</a></li>
                 </ul>
-            </div>
+            </div> -->
 
             <!-- Sản phẩm -->
-            <div class="col-md-3 mb-4">
+            <!-- <div class="col-md-3 mb-4">
                 <h5 class="fw-bold mb-3">Sản phẩm</h5>
                 <ul class="list-unstyled">
                     <li><a href="#" class="text-decoration-none text-dark">Doanh nhân và Doanh nghiệp</a></li>
@@ -265,10 +300,10 @@
                     <li><a href="#" class="text-decoration-none text-dark">Sức khỏe - Hạnh phúc</a></li>
                     <li><a href="#" class="text-decoration-none text-dark">Tài chính cá nhân</a></li>
                 </ul>
-            </div>
+            </div> -->
 
             <!-- Tin tức - Sự kiện -->
-            <div class="col-md-3 mb-4">
+            <!-- <div class="col-md-3 mb-4">
                 <h5 class="fw-bold mb-3">Tin tức - Sự kiện</h5>
                 <ul class="list-unstyled">
                     <li><a href="#" class="text-decoration-none text-dark">Báo chí truyền thông</a></li>
@@ -276,15 +311,15 @@
                     <li><a href="#" class="text-decoration-none text-dark">Tuyển dụng</a></li>
                     <li><a href="#" class="text-decoration-none text-dark">Review sách BrainyReads</a></li>
                 </ul>
-            </div>
+            </div> -->
 
-        </div>
+        <!-- </div>
     </div>
-    </footer>
+    </footer> -->
     <!-- Footer -->
-    <footer class="custom-footer">
+    <!-- <footer class="custom-footer">
         <p class="mb-0">© 2025 BrainyReads. All Rights Reserved.</p>
-    </footer>
+    </footer> -->
 <style>
         #btnShowCategories,#btnAdd,#btnlogout,#btnShowSuggestions,
         #btnShowOrders {

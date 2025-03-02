@@ -78,23 +78,34 @@ class AuthController extends Controller
      *
      * @return response()
      */
-    public function postRegistration(Request $request): RedirectResponse
-    {  
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
+    public function postRegistration(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name'  => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => [
+                'required',
+                'string',
+                'min:8',       // Ít nhất 8 ký tự
+                'confirmed',   // Phải trùng với password_confirmation
+                // Regex: đảm bảo có ít nhất một chữ cái và một số
+                'regex:/^(?=.*[A-Za-z])(?=.*\d).+$/'
+            ],
+        ], [
+            'password.regex' => 'Mật khẩu phải chứa ít nhất một chữ cái và một số, và có độ dài tối thiểu 8 ký tự.',
         ]);
-           
-        $data = $request->all();
-        $user = $this->create($data);
 
-       
-            
-        Auth::login($user); 
+        // Tiếp tục tạo người dùng (sử dụng Hash để mã hóa mật khẩu)
+        $user = User::create([
+            'name'     => $validatedData['name'],
+            'email'    => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
+        ]);
 
-        return redirect("products")->withSuccess('Great! You have Successfully loggedin');
+        // Sau khi tạo thành công, có thể đăng nhập tự động hoặc chuyển hướng về trang khác
+        return redirect()->route('login')->with('success', 'Tài khoản của bạn đã được tạo thành công!');
     }
+
     
     /**
      * Write code on Method

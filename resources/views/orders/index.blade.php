@@ -2,114 +2,94 @@
 
 @section('content')
 <div class="container mt-5">
-    <h1 class="mb-4 text-center">Danh sách mua hàng</h1>
-    <div class="row">
-        @foreach($orders as $order)
-        <div class="col-md-4 mb-4">
-            <div class="card order-card shadow-sm border-0">
-                <!-- Phần hình ảnh với overlay hiển thị Order ID -->
-                <div class="order-image">
-                    <img src="{{ asset($order->img) }}" class="card-img-top" alt="Order Image" style="height:200px; object-fit: cover;">
-                    <div class="order-overlay">
-                        <span class="order-id">Order #{{ $order->id }}</span>
+    <h1 class="mb-4 text-center">Đơn mua hàng</h1>
+    <div class="d-flex justify-content-end gap-2 mb-3">
+        <!-- Nút "Giỏ hàng": chuyển đến trang xem đơn hàng -->
+        <a href="{{ route('products.index') }}" class="btn btn-primary btn-sm">Trở về</a>
+        <a href="{{ route('cart.index') }}" class="btn btn-primary btn-sm">Giỏ hàng</a>
+    </div>
+    {{-- Giả sử $orders là danh sách các đơn hàng --}}
+    @foreach($orders as $order)
+        <div class="card mb-4 shadow-sm">
+            <!-- Header: Hiển thị trạng thái đơn hàng -->
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                    @if($order->status === 'paid')
+                        <span class="badge bg-success">Giao hàng thành công</span>
+                        <span class="text-danger fw-bold ms-2">HOÀN THÀNH</span>
+                    @elseif($order->status === 'shipping')
+                        <span class="badge bg-warning text-dark">Đang vận chuyển</span>
+                    @else
+                        <span class="badge bg-secondary">Chờ phê duyệt</span>
+                    @endif
+                </div>
+                <div>
+                    <!-- <button class="btn btn-link text-decoration-none p-0">
+                        <small>Xem Shop</small>
+                    </button> -->
+                </div>
+            </div>
+
+            <!-- Body: Hiển thị thông tin sản phẩm của đơn hàng -->
+            <div class="card-body">
+                <div class="row g-3 align-items-center mb-3 border-bottom pb-3">
+                    <div class="col-auto">
+                        @if($order->product && $order->product->image)
+                            <img src="{{ asset($order->product->image) }}" alt="Product Image" 
+                                class="img-fluid rounded" 
+                                style="width: 80px; height:80px; object-fit: cover;">
+                        @else
+                            <img src="{{ asset('images/default-product.png') }}" alt="Default Image" 
+                                class="img-fluid rounded" 
+                                style="width: 80px; height:80px; object-fit: cover;">
+                        @endif
+                    </div>
+                    <div class="col">
+                        <h5 class="mb-1">{{ $order->product->name }}</h5>
+                        {{-- Nếu có thông tin phân loại (variation) sản phẩm, bạn có thể hiển thị tại đây --}}
+                        <!-- <p class="mb-1 text-muted">
+                            Phân loại hàng: {{ $order->product->variation ?? 'N/A' }}
+                        </p> -->
+                        <p class="mb-0">
+                            Số lượng: <strong>{{ $order->quantity }}</strong>
+                        </p>
+                    </div>
+                    <div class="col-auto text-end">
+                        {{-- Hiển thị giá gốc nếu có và lớn hơn giá bán --}}
+                        <!-- @if($order->product && $order->product->original_price && $order->product->original_price > $order->product->price)
+                            <div class="text-decoration-line-through text-muted">
+                                {{ number_format($order->product->original_price, 0) }}$
+                            </div>
+                        @endif -->
+                        <div class="fs-5 fw-bold text-danger">
+                            {{ number_format($order->price, 0) }}$
+                        </div>
                     </div>
                 </div>
-                <!-- Nội dung chi tiết đơn hàng -->
-                <div class="card-body">
-                    <h5 class="card-title">{{ $order->product->name }}</h5>
-                    <p class="card-text">
-                        <strong>Giá sản phẩm:</strong> ${{ number_format($order->price, 2) }}<br>
-                        <strong>Thời gian:</strong> {{ \Carbon\Carbon::parse($order->order_time)->format('d M Y, H:i') }}
-                    </p>
-                    <div class="d-flex justify-content-between">
-                        <button type="button" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#viewProductModal{{ $order->id }}">
-                            Chi tiết
-                        </button>
-                        <!-- Form xóa đơn hàng -->
-                        <form action="{{ route('orders.destroy', $order->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this order?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
-                        </form>
-                    </div>
+                
+                <!-- Thông tin giao hàng -->
+                <div class="mb-3">
+                    <p class="mb-1"><strong>Địa chỉ giao hàng:</strong> {{ $order->address }}</p>
+                    <p class="mb-1"><strong>SĐT:</strong> {{ $order->phone }}</p>
+                    <p class="mb-1"><strong>Email:</strong> {{ $order->email }}</p>
+                </div>
+            </div>
+
+            <!-- Footer: Tổng tiền và nút hành động -->
+            <div class="card-footer d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="me-3">
+                        Thành tiền: 
+                        <strong class="text-danger">
+                            {{ number_format($order->price * $order->quantity, 0) }}$
+                        </strong>
+                    </span>
                 </div>
             </div>
         </div>
-        @endforeach
-    </div>
-    <div class="text-center">
-        <a href="{{ route('products.index') }}" class="btn btn-dark mt-3">Trở lại</a>
-    </div>
-</div>
+    @endforeach
 
-<!-- Modal hiển thị chi tiết sản phẩm (nếu cần) -->
-@foreach($orders as $order)
-<div class="modal fade" id="viewProductModal{{ $order->id }}" tabindex="-1" aria-labelledby="viewProductModalLabel{{ $order->id }}" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-         <h5 class="modal-title" id="viewProductModalLabel{{ $order->id }}">Chi tiết đơn hàng</h5>
-         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-         <div class="row">
-            <div class="col-md-6">
-                @if($order->img)
-                <img src="{{ asset($order->img) }}" alt="{{ $order->name }}" class="img-fluid rounded">
-                @else
-                <img src="{{ asset('images/default-product.png') }}" alt="Default Image" class="img-fluid rounded">
-                @endif
-            </div>
-            <div class="col-md-6">
-                <h3>{{ $order->product->name }}</h3>
-                <h4 class="text-success">${{ number_format($order->price, 2) }}</h4>
-                <p><strong>Mô tả:</strong> {{ $order->product->detail ?? 'No description available.' }}</p>
-                <p><strong>Thời gian đặt hàng:</strong> {{ \Carbon\Carbon::parse($order->order_time)->format('d M Y, H:i') }}</p>
-            </div>
-         </div>
-      </div>
-      <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-      </div>
-    </div>
-  </div>
-</div>
-@endforeach
 
-<style>
-    .order-card {
-        border-radius: 15px;
-        overflow: hidden;
-        transition: transform 0.3s, box-shadow 0.3s;
-        position: relative;
-    }
-    .order-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-    .order-image {
-        position: relative;
-    }
-    .order-card .card-img-top {
-        height: 200px;
-        object-fit: cover;
-        width: 100%;
-        transition: transform 0.3s;
-    }
-    .order-card:hover .card-img-top {
-        transform: scale(1.05);
-    }
-    .order-overlay {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        background: rgba(0, 0, 0, 0.6);
-        padding: 5px 10px;
-        border-radius: 5px;
-    }
-    .order-overlay .order-id {
-        color: #fff;
-        font-weight: bold;
-    }
-</style>
+
+</div>
 @endsection

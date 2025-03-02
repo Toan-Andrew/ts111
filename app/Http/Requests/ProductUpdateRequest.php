@@ -27,6 +27,7 @@ class ProductUpdateRequest extends FormRequest
             'price' => 'required',
             'image'   => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'preview' => 'nullable|mimes:pdf|max:10000', // Kiểm tra file PDF
+            'quantity' => 'required|integer|min:1',
         ];
     }
 }

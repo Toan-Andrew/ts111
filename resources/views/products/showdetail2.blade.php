@@ -17,19 +17,41 @@
             <div class="col-md-6">
                 <h1 class="display-5 text-primary">{{ $product->name }}</h1>
                 <p class="text-muted">{{ $product->detail }}</p>
-                <h3 class="text-success">${{ number_format($product->price, 2) }}</h3>
-
-                <div class="d-flex align-items-center mt-3">
-                    <a href="{{ route('products.index') }}" class="btn" style="background-color: #0D47A1; color: white;">
-                        Trở lại Trang chủ
-                    </a>
-                    <button class="btn btn-success ms-2" data-bs-toggle="modal" data-bs-target="#buyProductModal">
-                        Mua ngay
-                    </button>
-                    <button type="button" class="btn ms-2" style="background-color: #FF9800; color: white;" data-bs-toggle="modal" data-bs-target="#pdfPreviewModal">
-                        Đọc trước
-                    </button>
+                <div class="price-section d-flex align-items-center">
+                    <h3 class="text-success me-3">Giá sản phẩm: {{ number_format($product->price, 2)  }}$</h3>
+                    @if($product->discount_price)
+                        <h5 class="text-danger text-decoration-line-through">${{ number_format($product->original_price, 2) }}</h5>
+                    @endif
                 </div>
+                <p class="text-info">Số lượng còn lại: <strong>{{ $product->quantity }}</strong></p>
+                @if($product->quantity <= 5 && $product->quantity > 0)
+                    <p class="text-warning">⚠️ Sắp hết hàng!</p>
+                @elseif($product->quantity == 0)
+                    <p class="text-danger">⛔ Hết hàng!</p>
+                @endif
+
+                <!-- Các nút hành động -->
+                <div class="d-flex flex-wrap gap-2 mt-3">
+                    <a href="{{ route('products.index') }}" class="btn btn-primary">Trở lại</a>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#pdfPreviewModal">Đọc trước</button>
+                    @if($product->quantity > 0)
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#buyProductModal">Mua ngay</button>
+                            <form action="{{ route('cart.add', $product->id) }}" method="POST" class="d-flex align-items-center">
+                                @csrf
+                                <input type="number" name="quantity" class="form-control me-2" min="1" max="{{ $product->quantity }}" value="1" style="width: 80px;">
+                                <button type="submit" class="btn btn-outline-primary">Thêm vào giỏ</button>
+                            </form>
+                    @else
+                        <button class="btn btn-secondary" disabled>Hết hàng</button>
+                    @endif
+                </div>
+            </div>
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
 
 

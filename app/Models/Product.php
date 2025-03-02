@@ -16,6 +16,7 @@ class Product extends Model
         'price',
         'category_id',
         'preview',
+        'quantity',
     ];
     // App\Models\Product.php
     public function category()

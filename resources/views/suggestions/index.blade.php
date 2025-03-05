@@ -20,9 +20,9 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <button id="btnShowCategories" class="btn btn-outline-light btn-lg mx-2">
+                    <a id="btnShowCategories" href="{{ route('categories.index') }}" class="btn btn-outline-light btn-lg mx-2">
                         Loại sách
-                    </button>
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a id="btnShowOrders" href="{{ route('ordersAdmin.index') }}" class="btn btn-outline-warning btn-lg mx-2">
@@ -30,9 +30,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a id="btnShowSuggestions" href="{{ route('suggestions.index') }}" class="btn btn-outline-warning btn-lg mx-2">
+                    <button id="btnShowSuggestions" class="btn btn-outline-warning btn-lg mx-2">
                         Hòm thư góp ý
-                    </a>
+                    </button>
                 </li>
                 <li class="nav-item">
                     <a id="btnAdd" href="{{ route('categories.create') }}" class="btn btn-success btn-lg mx-2">
@@ -49,44 +49,36 @@
     </div>
 </nav>
 
-<!-- Nội dung chính: Categories -->
+<!-- Nội dung chính: Suggestions -->
 <div class="container mt-5 pt-5">
-    <h1 class="mb-4 text-center">Danh mục sách</h1>
-    <div class="row">
-        @foreach($categories as $category)
-        <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-3">
-            <div class="card shadow-lg border-0 rounded">
-                <img src="{{ asset($category->image) }}" class="card-img-top rounded-top"
-                    style="height: 180px; object-fit: cover;" alt="{{ $category->name }}">
-                <div class="card-body text-center">
-                    <h5 class="card-title text-primary">{{ $category->name }}</h5>
-                    <div class="d-grid gap-2">
-                        <a href="{{ route('categories.showProducts', $category->id) }}" class="btn btn-info btn-sm">
-                            <i class="fa fa-eye"></i> Xem sản phẩm
-                        </a>
-                        <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-warning btn-sm">
-                            <i class="fa fa-pen"></i> Chỉnh sửa
-                        </a>
-                        <form action="{{ route('categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
-                            @csrf 
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm w-100">
-                                <i class="fa fa-trash"></i> Xóa
-                            </button>
-                        </form>
-                        <a href="{{ route('categories.createProduct', $category->id) }}" class="btn btn-success btn-sm">
-                            <i class="fa fa-plus"></i> Thêm sản phẩm
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endforeach
+    <div class="text-center mb-3">
+        <h2>Hòm thư góp ý</h2>
     </div>
 
-    <!-- Pagination cho Categories -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover shadow-sm">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>Tên người dùng</th>
+                    <th>Email</th>
+                    <th>Nội dung góp ý</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($suggestions as $suggestion)
+                <tr class="text-center">
+                    <td>{{ $suggestion->name }}</td>
+                    <td>{{ $suggestion->email }}</td>
+                    <td>{{ $suggestion->message }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination cho Suggestions -->
     <div class="d-flex justify-content-center mt-4">
-        {{ $categories->links() }}
+        {{ $suggestions->links('pagination::bootstrap-4') }}
     </div>
 </div>
 @endsection

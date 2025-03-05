@@ -21,24 +21,26 @@ class CategoryController extends Controller
      */
     public function index(Request $request): View
     {
-        $search = $request->input('search'); // Lấy giá trị tìm kiếm từ request (có thể là email hoặc name)
+        $search = $request->input('search');
 
         // Tìm kiếm các đơn hàng dựa trên email hoặc tên
         $orders = Order::query()
             ->when($search, function ($query) use ($search) {
-                $query->where('email', 'like', "%$search%") // Tìm kiếm theo email
-                    ->orWhere('name', 'like', "%$search%"); // Tìm kiếm theo tên
+                $query->where('email', 'like', "%$search%")
+                    ->orWhere('name', 'like', "%$search%");
             })
-            ->latest() // Sắp xếp theo thời gian (mới nhất trước)
-            ->paginate(6); // Phân trang với 6 đơn hàng mỗi trang
+            ->latest()
+            ->paginate(5); // Sử dụng 6 đơn hàng mỗi trang
 
         // Lấy danh sách các danh mục
-        $categories = Category::latest()->paginate(6); // Giả sử bạn có Category model
-        $orders = Order::latest()->paginate(5);
+        $categories = Category::latest()->paginate(6);
+
+        // Lấy danh sách góp ý
         $suggestions = Suggestion::latest()->paginate(5);
 
-        return view('categories.index', compact('orders', 'categories','suggestions')); // Trả về view với danh sách đơn hàng và danh mục
+        return view('categories.index', compact('orders', 'categories', 'suggestions'));
     }
+
 
 
     public function showProducts($categoryId): View

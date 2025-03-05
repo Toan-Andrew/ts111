@@ -99,6 +99,7 @@ class CartController extends Controller
             if(isset($cart[$key])) {
                 $item = $cart[$key];
                 Order::create([
+                    'user_id'    => $request->user()->id, // hoặc auth()->id()
                     'product_id' => $item['id'],
                     'name'       => $request->name,
                     'phone'      => $request->phone,
@@ -108,7 +109,7 @@ class CartController extends Controller
                     'price'      => $item['price'] * $item['quantity'],
                     'img'        => $item['image'] ?? 'default.jpg',
                     'order_time' => now(),
-                    'status'     => 'paid'
+                    'status'     => 'wait',
                 ]);
         
                 // Cập nhật tồn kho cho từng sản phẩm

@@ -77,7 +77,6 @@
                         <li class="nav-item"><a class="nav-link" href="#intro">Giới thiệu</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('products.index') }}">Sản phẩm</a></li>
                         <li class="nav-item"><a class="nav-link" href="#testimonials">Khách hàng</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#contact">Liên hệ</a></li>
                     </ul>
                 </div>
             </div>
@@ -138,38 +137,6 @@
                         <p class="card-text">"Một nguồn cảm hứng vô tận cho những tâm hồn yêu sách."</p>
                         <h5 class="card-title">Lê Văn C</h5>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-5">
-        <div class="container" data-aos="fade-up">
-            <h2 class="text-center mb-4">Liên hệ với chúng tôi</h2>
-            <div class="row">
-                <div class="col-md-6">
-                    <form>
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Họ tên</label>
-                            <input type="text" class="form-control" id="name" placeholder="Nhập họ tên">
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="Nhập email">
-                        </div>
-                        <div class="mb-3">
-                            <label for="message" class="form-label">Lời nhắn</label>
-                            <textarea class="form-control" id="message" rows="4" placeholder="Nhập lời nhắn"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Gửi</button>
-                    </form>
-                </div>
-                <div class="col-md-6">
-                    <h4>Thông tin liên hệ</h4>
-                    <p><strong>Địa chỉ:</strong> Số 123, Phố ABC, Quận XYZ, Hà Nội</p>
-                    <p><strong>Điện thoại:</strong> 0123 456 789</p>
-                    <p><strong>Email:</strong> info@brainyreads.com</p>
                 </div>
             </div>
         </div>

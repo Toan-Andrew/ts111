@@ -11,7 +11,7 @@ use App\Http\Controllers\SuggestionController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\AuthMiddleware;
-
+use App\Http\Controllers\OrdersAdminController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -54,11 +54,16 @@ Route::middleware([AuthMiddleware::class])->group(function () {
     Route::resource('products', ProductController::class);
 
     // Order routes (cho admin quản lý đơn hàng)
-    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::delete('orders/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
-    Route::get('orders/search', [OrderController::class, 'search'])->name('orders.search');
-    Route::put('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+    
+    //Route::resource('orders', OrdersAdminController::class)->except(['create', 'store', 'show']);
 
+    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::delete('orders/{id}', [OrdersAdminController::class, 'destroy'])->name('orders.destroy');
+    Route::get('orders/search', [OrderController::class, 'search'])->name('orders.search');
+    Route::put('/orders/{id}', [OrdersAdminController::class, 'update'])->name('orders.update');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/ordersAdmin', [SuggestionController::class, 'index'])->name('ordersAdmin.index');
+    Route::resource('ordersAdmin', OrdersAdminController::class);
     // Category routes
     Route::get('/categories/{categoryId}/create/product', [CategoryController::class, 'createProduct'])->name('categories.createProduct');
     Route::resource('categories', CategoryController::class);
@@ -68,6 +73,7 @@ Route::middleware([AuthMiddleware::class])->group(function () {
 
     // Suggestion routes (cho admin quản lý góp ý)
     Route::get('suggestions/search', [SuggestionController::class, 'search'])->name('suggestions.search');
+    Route::get('/suggestions', [SuggestionController::class, 'index'])->name('suggestions.index');
 
     // Cart routes (chỉ cho phép khách hàng đã đăng nhập thao tác giỏ hàng)
     Route::post('cart/add/{id}', [CartController::class, 'add'])->name('cart.add');

@@ -20,14 +20,14 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <button id="btnShowCategories" class="btn btn-outline-light btn-lg mx-2">
+                    <a id="btnShowCategories" href="{{ route('categories.index') }}" class="btn btn-outline-light btn-lg mx-2">
                         Loại sách
-                    </button>
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a id="btnShowOrders" href="{{ route('ordersAdmin.index') }}" class="btn btn-outline-warning btn-lg mx-2">
+                    <button id="btnShowOrders" class="btn btn-outline-warning btn-lg mx-2">
                         Danh sách đặt hàng
-                    </a>
+                    </button>
                 </li>
                 <li class="nav-item">
                     <a id="btnShowSuggestions" href="{{ route('suggestions.index') }}" class="btn btn-outline-warning btn-lg mx-2">
@@ -49,44 +49,76 @@
     </div>
 </nav>
 
-<!-- Nội dung chính: Categories -->
+<!-- Nội dung chính: Orders -->
 <div class="container mt-5 pt-5">
-    <h1 class="mb-4 text-center">Danh mục sách</h1>
-    <div class="row">
-        @foreach($categories as $category)
-        <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-3">
-            <div class="card shadow-lg border-0 rounded">
-                <img src="{{ asset($category->image) }}" class="card-img-top rounded-top"
-                    style="height: 180px; object-fit: cover;" alt="{{ $category->name }}">
-                <div class="card-body text-center">
-                    <h5 class="card-title text-primary">{{ $category->name }}</h5>
-                    <div class="d-grid gap-2">
-                        <a href="{{ route('categories.showProducts', $category->id) }}" class="btn btn-info btn-sm">
-                            <i class="fa fa-eye"></i> Xem sản phẩm
-                        </a>
-                        <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-warning btn-sm">
-                            <i class="fa fa-pen"></i> Chỉnh sửa
-                        </a>
-                        <form action="{{ route('categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
-                            @csrf 
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm w-100">
-                                <i class="fa fa-trash"></i> Xóa
-                            </button>
-                        </form>
-                        <a href="{{ route('categories.createProduct', $category->id) }}" class="btn btn-success btn-sm">
-                            <i class="fa fa-plus"></i> Thêm sản phẩm
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endforeach
+    <h1 class="mb-4 text-center">Đơn mua hàng</h1>
+    <div class="d-flex justify-content-end gap-2 mb-3">
+        <a href="{{ route('products.index') }}" class="btn btn-primary btn-sm">Trở về</a>
+        <a href="{{ route('cart.index') }}" class="btn btn-primary btn-sm">Giỏ hàng</a>
     </div>
 
-    <!-- Pagination cho Categories -->
+    <form method="GET" action="{{ route('ordersAdmin.index') }}" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search by email or name" value="{{ request('search') }}">
+            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover shadow-sm">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>Tên</th>
+                    <th>Số điện thoại</th>
+                    <th>Địa chỉ</th>
+                    <th>Email</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá tiền</th>
+                    <th>Thời gian đặt hàng</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+    @foreach($orders as $order)
+    <tr class="text-center">
+        <td>{{ $order->name }}</td>
+        <td>{{ $order->phone }}</td>
+        <td>{{ $order->address }}</td>
+        <td>{{ $order->email }}</td>
+        <td>{{ optional($order->product)->name ?? 'N/A' }}</td> <!-- Kiểm tra có sản phẩm không -->
+        <td class="text-success">${{ number_format($order->price, 2) }}</td>
+        <td>{{ $order->order_time }}</td>
+        <td>
+            <!-- Form cập nhật trạng thái đơn hàng -->
+            <form action="{{ route('orders.update', $order->id) }}" method="POST" class="status-form">
+                @csrf
+                @method('PUT')
+                <select name="status" class="form-select order-status" data-id="{{ $order->id }}">
+                    <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>Chờ duyệt</option>
+                    <option value="shipping" {{ $order->status === 'shipping' ? 'selected' : '' }}>Đang vận chuyển</option>
+                    <option value="paid" {{ $order->status === 'paid' ? 'selected' : '' }}>Thành công</option>
+                </select>
+            </form>
+        </td>
+        <td>
+            <!-- Nút Xóa đơn hàng -->
+            <form action="{{ route('orders.destroy', $order->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa đơn hàng này không?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+            </form>
+        </td>
+    </tr>
+    @endforeach
+</tbody>
+
+        </table>
+    </div>
+
+    <!-- Pagination cho Orders -->
     <div class="d-flex justify-content-center mt-4">
-        {{ $categories->links() }}
+        {{ $orders->links() }}
     </div>
 </div>
 @endsection
@@ -201,3 +233,48 @@
         }
 
     </style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    let csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+
+    if (!csrfTokenMeta) {
+        console.error("CSRF Token meta tag not found!");
+        return; // Không chạy tiếp nếu không có CSRF token
+    }
+
+    let csrfToken = csrfTokenMeta.getAttribute("content");
+
+    document.querySelectorAll('.order-status').forEach(select => {
+        select.addEventListener('change', function() {
+            let orderId = this.getAttribute('data-id');
+            let status = this.value;
+
+            fetch(`/orders/${orderId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ status: status })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Cập nhật trạng thái thành công!");
+                } else {
+                    alert("Lỗi: " + data.message);
+                }
+            })
+            .catch(error => console.error('Lỗi:', error));
+        });
+    });
+});
+
+</script>
+
+<script>
+console.log("CSRF Token:", document.querySelector('meta[name="csrf-token"]'));
+</script>
+

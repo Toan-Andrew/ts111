@@ -19,7 +19,7 @@
                         <span class="text-danger fw-bold ms-2">HOÀN THÀNH</span>
                     @elseif($order->status === 'shipping')
                         <span class="badge bg-warning text-dark">Đang vận chuyển</span>
-                    @else
+                    @else($order->status === 'wait')
                         <span class="badge bg-secondary">Chờ phê duyệt</span>
                     @endif
                 </div>

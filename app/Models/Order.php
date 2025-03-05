@@ -18,6 +18,8 @@ class Order extends Model
         'img',
         'order_time',
         'status',
+        'user_id',
+        'img'        => ''
     ];
 
     public function product()

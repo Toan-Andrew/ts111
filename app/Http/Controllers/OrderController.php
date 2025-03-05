@@ -23,7 +23,8 @@ class OrderController extends Controller
             });
         }
 
-        $orders = Order::where('user_id', auth()->id())->latest()->paginate(5);
+        $orders = Order::where('user_id', $request->user()->id)->latest()->paginate(5);
+
 
 
         return view('orders.index', compact('orders'));
@@ -69,7 +70,7 @@ class OrderController extends Controller
             return redirect()->back()->with('error', 'Sản phẩm không tồn tại!');
         }
         Order::create([
-            'user_id'   => auth()->id(), // hoặc $request->user()->id,
+            'user_id'   => $request->user()->id,
             'product_id'=> $product->id,
             'name' => $request->name,
             'phone' => $request->phone,
@@ -78,7 +79,8 @@ class OrderController extends Controller
             'quantity' => 1, // Nếu đặt hàng trực tiếp, mặc định là 1 sản phẩm
             'price' => $product->price, // Lấy giá từ sản phẩm đã tìm thấy
             'order_time' => now(),
-            'status' => 'paid'
+            'status' => 'wait',
+            'img' =>  $product->image,
         ]);
 
         return redirect()->route('orders.index')->with('success', 'Đơn hàng của bạn đã được đặt thành công!');

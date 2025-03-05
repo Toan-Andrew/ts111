@@ -8,7 +8,7 @@ From Phenikaa University
 BrainyReads là một website thương mại điện tử chuyên cung cấp và phân phối các loại sách đa dạng, từ sách giáo khoa, sách kỹ năng, đến tiểu thuyết và sách chuyên ngành. Với giao diện thân thiện và dễ sử dụng, nền tảng này giúp người dùng dễ dàng tìm kiếm, chọn mua và quản lý bộ sưu tập sách cá nhân một cách nhanh chóng, tạo ra một trải nghiệm mua sắm sách trực tuyến tối ưu và thuận tiện nhất.
 
 
- - Detailed project documentation is [here](https://drive.google.com/file/d/1GMC3Xkb_7E_38nj__eUz10EEAtnHFHmf/view?usp=sharing)
+ - Detailed project documentation is [here](https://drive.google.com/file/d/1hNkPq4pBIFqGrtWDNo84s7gPof2CmomG/view?usp=sharing)
  - API documentaion is [here](https://github.com/Toan-Andrew/ts111/wiki)
  - Github: https://github.com/Toan-Andrew/ts111
 ---
@@ -83,40 +83,25 @@ BrainyReads là một website thương mại điện tử chuyên cung cấp và
 ## Hình ảnh trang web
 
 ### 🏠 Giao diện trang giới thiệu  
-![Image](https://github.com/user-attachments/assets/2048a6d4-87e0-43eb-bbbb-6e6a8f366218)
-
-### 🔐 Giao diện đăng nhập  
-![Giao diện đăng nhập](https://github.com/user-attachments/assets/a9d58371-ded0-4fb6-abd9-82e9b33aa768)
-
-### 📝 Giao diện đăng ký  
-![Giao diện đăng ký](https://github.com/user-attachments/assets/0ee5504f-bb24-400b-a358-76c9fd3e7919)
+![Image](https://github.com/user-attachments/assets/ee586644-ae9a-434b-aa0e-55aeeaf4a5cc)
 
 ### 🏡 Giao diện trang chủ  
 ![Giao diện trang chủ](https://github.com/user-attachments/assets/9fe70582-fa2f-4c56-a4e1-029618e39957)
 
-### 📂 Giao diện chọn loại sản phẩm  
-![Giao diện chọn loại sản phẩm](https://github.com/user-attachments/assets/7fad9f5e-ec9d-4505-92d0-f35ad95cc190)
-
 ### 🔍 Giao diện xem chi tiết sản phẩm  
-![Giao diện xem chi tiết sản phẩm](https://github.com/user-attachments/assets/1e09535b-5b93-4bf4-8f8a-2c0e51329ab2)
+![Giao diện xem chi tiết sản phẩm](https://github.com/user-attachments/assets/2742de65-6252-4467-9c66-bfa444542024)
 
 ### 👀 Giao diện Xem trước sản phẩm 
 ![Giao diện Xem trước sản phẩm](https://github.com/user-attachments/assets/3bf95fba-6659-49ab-8a37-cbd36d067756)
 
-### 🛒 Giao diện Mua sản phẩm  
-![Giao diện Mua sản phẩm](https://github.com/user-attachments/assets/0c388607-1b79-4183-b89d-974d285942bf)
-
 ### 📦 Giao diện Đơn hàng đã mua
-![Giao diện Đơn hàng đã mua](https://github.com/user-attachments/assets/9c8ca5e1-5ffe-4b55-a57b-16c9ba4fb83e)
+![Giao diện Đơn hàng đã mua](https://github.com/user-attachments/assets/c0e762ab-2b51-4b2c-9108-93d6f47dd8de)
 
-### 📄 Giao diện Xem chi tiết sản phẩm đã mua
-![Giao diện Xem chi tiết sản phẩm đã mua](https://github.com/user-attachments/assets/5f6ee9c3-0fae-4b0e-9219-5408ccfce176)
+### 📄 Giao diện Giỏ hàng
+![Giao diện Xem chi tiết sản phẩm đã mua](https://github.com/user-attachments/assets/eeef3128-9c86-4762-baaa-3795d8fe7f84)
 
 ### 👤 Giao diện Thông tin tài khoản người dùng
 ![Giao diện Thông tin tài khoản người dùng](https://github.com/user-attachments/assets/196adb17-ed6d-47f2-8b09-67f50cd08d65)
-
-### 🔄 Giao diện Cập nhập thông tin người dùng 
-![Giao diện Cập nhập thông tin người dùng](https://github.com/user-attachments/assets/f4d29b79-0cb4-4134-949f-f6a08a9cc35d)
 
 ### 🏢 Giao diện Trang chủ Admin  
 ![Giao diện Trang chủ Admin](https://github.com/user-attachments/assets/d0db3320-f9e6-451d-92a1-e833cdb7e81d)
@@ -126,12 +111,6 @@ BrainyReads là một website thương mại điện tử chuyên cung cấp và
 
 ### ✏️ Giao diện Chỉnh sửa loại sản phẩm  
 ![Giao diện Chỉnh sửa loại sản phẩm](https://github.com/user-attachments/assets/8cefcfb1-0fbe-4c16-b834-c836eb9c8a4a)
-
-### 📋 Giao diện Danh sách sản phẩm trong loại sản phẩm  
-![Giao diện Danh sách sản phẩm trong loại sản phẩm](https://github.com/user-attachments/assets/082d93ec-37d6-45ae-a07e-ed0c4501ef86)
-
-### 🗂️ Giao diện Danh sách sản phẩm đã tạo  
-![Giao diện Danh sách sản phẩm đã tạo](https://github.com/user-attachments/assets/53bfeb99-1e15-4790-bc74-5f3a174ef093)
 
 ### ➕ Giao diện Thêm sản phẩm  
 ![Giao diện Thêm sản phẩm](https://github.com/user-attachments/assets/e119659d-d4d7-49df-88ff-a2fa563538d1)
@@ -159,4 +138,4 @@ BrainyReads là một website thương mại điện tử chuyên cung cấp và
 
 Xem video demo của ứng dụng tại link dưới đây:
 
-- [Xem Video Demo](https://drive.google.com/file/d/1OpfDMILuyVyPnxFbu8IRszh0WZ1ucwwa/view?usp=sharing)
+- [Xem Video Demo](https://drive.google.com/file/d/1rB2s7l0PEYv1x6zgyBYhi0xu1AmMvObE/view?usp=sharing)

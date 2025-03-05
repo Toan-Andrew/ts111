@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function() {
             row.querySelector('.subtotal').innerText = `$${(price * quantity).toFixed(2)}`;
         });
         // Phí vận chuyển: nếu sản phẩm được chọn < 3 thì phí = $3, ngược lại phí = 0
-        let shippingFee = (selectedCount > 0 && selectedCount < 3) ? 3 : 0;
+        let shippingFee = (selectedCount > 0) ? 3 : 0;
         selectedItemsCountEl.innerText = "Sản phẩm: " + selectedCount;
         shippingFeeEl.innerText = "Phí vận chuyển: $" + shippingFee.toFixed(2);
         billTotalEl.innerText = "Tổng: $" + (total + shippingFee).toFixed(2);

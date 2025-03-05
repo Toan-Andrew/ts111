@@ -172,18 +172,25 @@ class CategoryController extends Controller
         $product->category_id = $categoryId;
 
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('products', 'public');
-            $product->image = $imagePath;
+            $file = $request->file('image');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $filePath = 'uploads/product/' . $filename;
+            $file->move(public_path('uploads/product/'), $filename);
+            
+            $product->image = $filePath;  // Lưu đường dẫn vào DB
         }
+        
 
         if ($request->hasFile('preview')) {
             $previewPath = $request->file('preview')->store('previews', 'public');
             $product->preview = $previewPath;
         }
-
+        
         $product->save();
+        
 
-        return redirect()->route('categories.index')->with('success', 'Sản phẩm đã được thêm thành công!');
+        return redirect()->route('categories.showProducts', ['categoryId' => $product->category_id])
+            ->with('success', 'Sản phẩm đã được cập nhật!');
     }
 
 }

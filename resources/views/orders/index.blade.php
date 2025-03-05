@@ -81,7 +81,7 @@
                     <span class="me-3">
                         Thành tiền: 
                         <strong class="text-danger">
-                            {{ number_format($order->price * $order->quantity, 0) }}$
+                            {{ number_format($order->price * $order->quantity + 3, 0) }}$
                         </strong>
                     </span>
                 </div>

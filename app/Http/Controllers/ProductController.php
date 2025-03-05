@@ -133,10 +133,11 @@ class ProductController extends Controller
         }
 
         // Tạo product mới với dữ liệu validated (bao gồm cả preview nếu có)
-        Product::create($validated);
+        $product = Product::create($validated); // Lưu sản phẩm vừa tạo vào biến $product
 
-        return redirect()->route('products.admin')
-                        ->with('success', 'Product created successfully.');
+        return redirect()->route('categories.showProducts', ['categoryId' => $product->category_id])
+            ->with('success', 'Sản phẩm đã được cập nhật!');
+
     }
 
 
@@ -191,8 +192,8 @@ class ProductController extends Controller
 
     $product->update($validated);
 
-    return redirect()->route('products.admin')
-                     ->with('success', 'Product updated successfully.');
+    return redirect()->route('categories.showProducts', ['categoryId' => $product->category_id])
+    ->with('success', 'Sản phẩm đã được cập nhật!');
 }
 
 
@@ -205,8 +206,8 @@ class ProductController extends Controller
     {
         $product->delete();
 
-        return redirect()->route('products.admin')
-                         ->with('success', 'Product deleted successfully.');
+        return redirect()->route('categories.showProducts', ['categoryId' => $product->category_id])
+        ->with('success', 'Sản phẩm đã được cập nhật!');
     }
     /**
      * Phần Category_id.
